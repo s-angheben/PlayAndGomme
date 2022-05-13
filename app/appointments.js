@@ -6,7 +6,9 @@ const router = express.Router();
 // get
 router.get('', async(req, res) => {
     let jsonExample = '{"appointmentId": "test1", "userId": "testU"}'
-    let appointments = JSON.parse(jsonExample);
+    let singleApp = JSON.parse(jsonExample);
+
+    let appointments = [singleApp];
 
     res.status(200).json(appointments);
 })
