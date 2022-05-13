@@ -5,14 +5,14 @@ function loadAppointments() {
 	.then(response => response.json())
 	.then(data => {
 
-        console.log(data);
+//    console.log(data);
        
 	return data.map( (entry) => {
 
-            let item = document.createElement('li');
-	    item.innerHTML = `${entry.appointmentId} ${entry.userId}`;
+        let item = document.createElement('li');
+	    item.innerHTML = `<a href="${entry.self}"> ${entry.service} ${entry.date}`;
 	    
-            appointmentsTable.appendChild(item);
+        appointmentsTable.appendChild(item);
         })
 
     })
