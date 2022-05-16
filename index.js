@@ -2,7 +2,7 @@ const app = require('./app/app.js');
 const mongoose = require('mongoose');
 
 const port = 8080;
-const db_url = 'mongodb+srv://admin:admin@webapp.2wzok.mongodb.net/Node?retryWrites=true&w=majority';
+const db_url = 'dburl';
 
 
 app.locals.db = mongoose.connect(db_url)

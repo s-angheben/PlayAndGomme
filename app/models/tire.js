@@ -30,6 +30,10 @@ const tireSchema = new Schema({
         type: String,
         enum: ['invernali', 'estive', 'quattro_stagioni'],
         required: true
+    },
+    price: {
+        type: Number,
+        required: true
     }
 }, {timestamps: true});
 

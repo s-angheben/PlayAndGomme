@@ -11,7 +11,8 @@ function tolinks(totire){
             height: totire.height,
             diameter: totire.diameter,
             quantity: totire.quantity,
-            type: totire.type
+            type: totire.type,
+            price: totire.price
     };
 }
 
