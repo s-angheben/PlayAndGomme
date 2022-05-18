@@ -1,0 +1,76 @@
+{
+  ".svelte-kit/runtime/client/start.js": {
+    "file": "start-11ea4417.js",
+    "src": ".svelte-kit/runtime/client/start.js",
+    "isEntry": true,
+    "imports": [
+      "_index-9b6b3a71.js"
+    ],
+    "dynamicImports": [
+      ".svelte-kit/runtime/components/layout.svelte",
+      ".svelte-kit/runtime/components/error.svelte",
+      "src/routes/index.svelte",
+      "src/routes/manageAppointments.svelte",
+      "src/routes/test.svelte"
+    ]
+  },
+  ".svelte-kit/runtime/components/layout.svelte": {
+    "file": "layout.svelte-4e5999c7.js",
+    "src": ".svelte-kit/runtime/components/layout.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-9b6b3a71.js"
+    ]
+  },
+  ".svelte-kit/runtime/components/error.svelte": {
+    "file": "error.svelte-2481600b.js",
+    "src": ".svelte-kit/runtime/components/error.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-9b6b3a71.js"
+    ]
+  },
+  "src/routes/index.svelte": {
+    "file": "pages/index.svelte-3f82a106.js",
+    "src": "src/routes/index.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-9b6b3a71.js",
+      "_Nav-a147ac77.js"
+    ]
+  },
+  "src/routes/manageAppointments.svelte": {
+    "file": "pages/manageAppointments.svelte-7f76fea9.js",
+    "src": "src/routes/manageAppointments.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-9b6b3a71.js",
+      "_Nav-a147ac77.js"
+    ]
+  },
+  "src/routes/test.svelte": {
+    "file": "pages/test.svelte-9ce2b1dd.js",
+    "src": "src/routes/test.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-9b6b3a71.js"
+    ],
+    "css": [
+      "assets/pages/test.svelte-0683b2c5.css"
+    ]
+  },
+  "_index-9b6b3a71.js": {
+    "file": "chunks/index-9b6b3a71.js"
+  },
+  "_Nav-a147ac77.js": {
+    "file": "chunks/Nav-a147ac77.js",
+    "imports": [
+      "_index-9b6b3a71.js"
+    ]
+  }
+}

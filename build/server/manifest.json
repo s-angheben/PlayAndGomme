@@ -1,0 +1,72 @@
+{
+  ".svelte-kit/build/index.js": {
+    "file": "index.js",
+    "src": ".svelte-kit/build/index.js",
+    "isEntry": true,
+    "imports": [
+      "_index-9471c4ee.js"
+    ],
+    "dynamicImports": [
+      ".svelte-kit/build/hooks.js"
+    ]
+  },
+  ".svelte-kit/runtime/components/layout.svelte": {
+    "file": "entries/fallbacks/layout.svelte.js",
+    "src": ".svelte-kit/runtime/components/layout.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index-9471c4ee.js"
+    ]
+  },
+  ".svelte-kit/runtime/components/error.svelte": {
+    "file": "entries/fallbacks/error.svelte.js",
+    "src": ".svelte-kit/runtime/components/error.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index-9471c4ee.js"
+    ]
+  },
+  "src/routes/index.svelte": {
+    "file": "entries/pages/index.svelte.js",
+    "src": "src/routes/index.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index-9471c4ee.js",
+      "_Nav-59a3a3aa.js"
+    ]
+  },
+  "src/routes/manageAppointments.svelte": {
+    "file": "entries/pages/manageAppointments.svelte.js",
+    "src": "src/routes/manageAppointments.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index-9471c4ee.js",
+      "_Nav-59a3a3aa.js"
+    ]
+  },
+  "src/routes/test.svelte": {
+    "file": "entries/pages/test.svelte.js",
+    "src": "src/routes/test.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index-9471c4ee.js"
+    ],
+    "css": [
+      "assets/entries/pages/test.svelte-3a03f2c7.css"
+    ]
+  },
+  "_index-9471c4ee.js": {
+    "file": "chunks/index-9471c4ee.js"
+  },
+  "_Nav-59a3a3aa.js": {
+    "file": "chunks/Nav-59a3a3aa.js",
+    "imports": [
+      "_index-9471c4ee.js"
+    ]
+  },
+  ".svelte-kit/build/hooks.js": {
+    "file": "chunks/hooks-1c45ba0b.js",
+    "src": ".svelte-kit/build/hooks.js",
+    "isDynamicEntry": true
+  }
+}

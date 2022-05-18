@@ -1,24 +1,27 @@
 {
-  "name": "playandgomme",
-  "version": "1.0.0",
-  "description": "web-application",
-  "main": "index.js",
+  "name": "testapp",
+  "version": "0.0.1",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "svelte-kit dev",
+    "build": "svelte-kit build",
+    "package": "svelte-kit package",
+    "preview": "svelte-kit preview",
+    "prepare": "svelte-kit sync",
+    "check": "svelte-check --tsconfig ./jsconfig.json",
+    "check:watch": "svelte-check --tsconfig ./jsconfig.json --watch"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/s-angheben/PlayAndGomme.git"
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "next",
+    "@sveltejs/kit": "next",
+    "svelte": "^3.44.0",
+    "svelte-check": "^2.2.6",
+    "typescript": "~4.6.2"
   },
-  "author": "Andreolli Fabio, Angheben Samuele, Moiola Christian",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/s-angheben/PlayAndGomme/issues"
-  },
-  "homepage": "https://github.com/s-angheben/PlayAndGomme#readme",
+  "type": "module",
   "dependencies": {
-    "dotenv": "^16.0.1",
+    "@sveltejs/adapter-node": "^1.0.0-next.73",
     "express": "^4.18.1",
-    "mongoose": "^6.3.3"
+    "mongoose": "^6.3.3",
+    "svelte-table": "^0.3.4"
   }
 }
