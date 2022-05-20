@@ -1,9 +1,8 @@
+require('dotenv').config()
 var mongoose = require('mongoose');
 var Appointment = require('./app/models/appointment');
 
-const db_url = 'mongodb://root:example@localhost:27017/mydb?authSource=admin';
-
-mongoose.connect(db_url)
+mongoose.connect(process.env.DB_URL)
 .then ( () => {
 	console.log("connected to Database");
 });

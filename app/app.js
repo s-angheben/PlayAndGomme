@@ -5,12 +5,13 @@ const swaggerUi = require('swagger-ui-express');
 
 const swaggerOptions = {
     definition: {
+        openapi: "3.0.0",
         info: {
-        title: 'PlayAndGomme API Information',
+        title: 'PlayAndGomme API',
             version: '1.0.0',
         },
     },
-    apis: ['./app/app.js'], // files containing annotations as above
+    apis: ['./app/appointments.js', './app/models/appointment.js'], 
 };
 
 const swaggerDocument = swaggerJsDoc(swaggerOptions);
