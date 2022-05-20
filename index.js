@@ -1,14 +1,13 @@
-const app = require('./app/app.js');
+const myapp = require('./app/app.js');
 const mongoose = require('mongoose');
 
 const port = 8080;
 const db_url = 'db_url';
 
-
-app.locals.db = mongoose.connect(db_url)
+myapp.app.locals.db = mongoose.connect(db_url)
 .then ( () => {
         
-    app.listen(port, () => {
+    myapp.app.listen(port, () => {
         console.log(`Server listening on port: ${port}`);
     });
     
@@ -19,3 +18,6 @@ app.locals.db = mongoose.connect(db_url)
 
 });
 
+myapp.http.listen(3030, () => {
+    console.log(`Socket.IO server running at http://localhost:3030/`);
+});

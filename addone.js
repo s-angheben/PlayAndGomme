@@ -6,10 +6,12 @@ const db_url = 'db_url';
 mongoose.connect(db_url)
 .then ( () => {
 	console.log("connected to Database");
+}).then( () => app.save()).then( () => {
+    console.log('appointments added');
+    process.exit();
 });
 
-Appointment.remove().then( () => {
-    const app1 = new Appointment({
+const app = new Appointment({
 		appointmentPlaced: Date(),
 		service : "cambio_gomme",
 		userId : "userid1",
@@ -19,20 +21,4 @@ Appointment.remove().then( () => {
 		}],
 		date : "2022-09-08",
 		alreadyPaid : true
-    });
-
-    const app2 = new Appointment({
-		appointmentPlaced: "2022-06-18",
-		service : "riparazione",
-		userId : "userid3",
-		materials : [],
-		date : "2022-07-08",
-		alreadyPaid : false
-    });
-
-    app1.save();
-    return app2.save();
-}).then( () => {
-    console.log('appointments added');
-    process.exit();
-});
+	});

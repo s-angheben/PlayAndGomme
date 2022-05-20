@@ -28,7 +28,8 @@ router.get('', async(req, res) => {
 
 router.get('/:id', async (req, res) => {
     let app = await Appointment.findById(req.params.id);
-    res.status(200).json(tolinks(app));
+    if (app == null) res.status(404).json({ error: 'Not found' });
+    else res.status(200).json(tolinks(app));
 });
     
 
