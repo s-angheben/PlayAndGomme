@@ -7,7 +7,7 @@ function tolinks(totire){
             self: '/api/v1/tires/' + totire.id,
             brand: totire.brand,
             model: totire.model,
-            lenght: totire.lenght,
+            length: totire.length,
             height: totire.height,
             diameter: totire.diameter,
             quantity: totire.quantity,
@@ -18,7 +18,7 @@ function tolinks(totire){
 
 //GET
 
-router.get('',async(req, res) =>{
+router.get('/',async(req, res) =>{
     let allTires = await Tire.find();
     res.status(200).json(allTires.map(tolinks));
 })

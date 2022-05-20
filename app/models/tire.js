@@ -39,3 +39,6 @@ const tireSchema = new Schema({
 
 const Tire = mongoose.model('Tire', tireSchema);
 module.exports = Tire;
+
+
+
