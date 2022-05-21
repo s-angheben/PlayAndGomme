@@ -17,4 +17,3 @@ app.locals.db = mongoose.connect(process.env.DB_URL)
     throw new Error('db connection error');
 
 });
-
