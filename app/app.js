@@ -10,7 +10,7 @@ const swaggerOptions = {
             version: '1.0.0',
         },
     },
-    apis: ['./app/app.js'], // files containing annotations as above
+    apis: ['./app/app.js'],
 };
 
 const swaggerDocument = swaggerJsDoc(swaggerOptions);
