@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Tire = require('./models/tire');
 
-function tolinks(totire){
+function TireToLink(totire){
     return {
             self: '/api/v1/tires/' + totire.id,
             brand: totire.brand,
@@ -46,7 +46,7 @@ function tolinks(totire){
 router.get('/',async(req, res) =>{
     let allTires = await Tire.find();
     if(allTires == null) res.status(404).json({ error: 'Not found'});
-    else res.status(200).json(allTires.map(tolinks));
+    else res.status(200).json(allTires.map(TireToLink));
 })
 
 /**
@@ -81,7 +81,7 @@ router.get('/',async(req, res) =>{
 router.get('/:id',async (req,res) =>{
     let singleTire = await Tire.findById(req.params.id);
     if(singleTire == null) res.status(404).json({ error: 'Not found'});
-    else res.status(200).json(tolinks(singleTire));
+    else res.status(200).json(TireToLink(singleTire));
 })
 
 

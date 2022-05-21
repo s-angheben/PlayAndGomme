@@ -8,10 +8,15 @@ function loadAppointments() {
 	return data.map( (entry) => {
 
         let item = document.createElement('tr');
-	    item.innerHTML = `<td><a href="${entry.self}">${entry.self}</a></td>
-                          <td>${entry.data}</td>
+        var appId = entry.self;
+        appId = appId.slice(21);
+        var userId = entry.userId;
+        userId = userId.slice(14);
+	    item.innerHTML = `<td><a href="${entry.self}">${appId}</a></td>
+                          <td>${entry.date}</td>
                           <td>${entry.service}</td>
-                          <td><a href="${entry.userId}">${entry.userId}</a></td>`;
+                          <td><a href="${entry.self}">Mostra Prodotti</td>
+                          <td><a href="${entry.userId}">${userId}</a></td>`;
 	    
         appointmentsTable.appendChild(item);
         })

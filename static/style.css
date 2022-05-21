@@ -16,6 +16,12 @@ h1.tire {
 a.tire {
     display: inline;
 }
+h1.appointment{
+    display: inline;
+}
+a.appointment{
+    display: inline;
+}
 td, th{
     border: 1px solid black;
     padding: 8px;

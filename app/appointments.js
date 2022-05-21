@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Appointment = require('./models/appointment');
 
-function tolinks(app) {
+function appointmentToLink(app) {
     return {
 		self: '/api/v1/appointments/' + app.id,
 		service : app.service,
@@ -47,7 +47,7 @@ function tolinks(app) {
 router.get('', async(req, res) => {
     let allAppointments = await Appointment.find();
     if (allAppointments == null) res.status(404).json({ error: 'Not found' });
-    else res.status(200).json(allAppointments.map( tolinks ));
+    else res.status(200).json(allAppointments.map( appointmentToLink ));
 })
 
 /**
@@ -81,7 +81,7 @@ router.get('', async(req, res) => {
 router.get('/:id', async (req, res) => {
     let app = await Appointment.findById(req.params.id);
     if (app == null) res.status(404).json({ error: 'Not found'});
-    else res.status(200).json(tolinks(app));
+    else res.status(200).json(appointmentToLink(app));
 });
     
 
