@@ -1,11 +1,10 @@
+require('dotenv').config()
 const app = require('./app/app.js');
 const mongoose = require('mongoose');
 
-const port = 8080;
-const db_url = 'dburl';
+const port = process.env.PORT || 8080;
 
-
-app.locals.db = mongoose.connect(db_url)
+app.locals.db = mongoose.connect(process.env.DB_URL)
 .then ( () => {
         
     app.listen(port, () => {
