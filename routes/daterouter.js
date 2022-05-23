@@ -2,6 +2,27 @@ var express = require('express');
 var router = express.Router();
 const visualizzaDate = require('../visualizzadate');
 
+/**
+ *  @openapi
+ *  components:
+ *      schemas:
+ *          visualizzaDate:
+ *              type: object
+ *              required:
+ *                  - gSettimana
+ *                  - giorno
+ *                  - slotOrari[36]
+ *              properties:
+ *                  gSettimana:
+ *                      type: string
+ *                      description: 'Day of the week'
+ *                  giorno:
+ *                      type: string
+ *                      description: 'Date in the format: dd/mm/yyyy'
+ *                  slotOrari[36]:
+ *                      type: boolean
+ *                      description: 'Array that reports occupied slots with "true"'
+ */
 
 // CALENDARIO GOOGLE
 const {google} = require('googleapis');
@@ -46,13 +67,40 @@ const getEvents = async (dateTimeStart, dateTimeEnd) => {
   };
 
 
-
-
+/**
+ *  @openapi
+ *  /visualdata:
+ *      get:
+ *          description: Get a graphical interface showing free and occupied time slots.
+ *          summary: View available time slots
+ *          responses:
+ *              200:
+ *                  description: 'Graphic interface that allows to visualize the available datas and time slots for booking an appointment. This datas are synchronized with the tire dealers Google chalendar: "https://calendar.google.com/calendar/u/1?cid=NDByZDU4M2wxdWhmODFydHIyMjMzc2FrdXNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ"'
+ */
 
 
 router.get('/', function(req, res, next) {
   res.render('visualdata');
 });
+
+
+/**
+ *  @openapi
+ *  /visualdata/dat:
+ *      post:
+ *          description: Get a json with the data regarding the dates and available time slots.
+ *          summary: Take data regarding time slots
+ *          responses:
+ *              200:
+ *                  description: 'API that, through the Google chalendars APIs, gives back a json file made of one array of the above elements.'
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/visualizzaDate'
+ */
+
 
 router.post('/dat', async (req,res) => {  
     var array = [new Date()];
