@@ -1,27 +1,23 @@
 {
   "name": "playandgomme",
-  "version": "1.0.0",
-  "description": "web-application",
-  "main": "index.js",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "devStart": "nodemon server.js"
+    "devStart": "nodemon server.js",
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/s-angheben/PlayAndGomme.git"
-  },
-  "author": "Andreolli Fabio, Angheben Samuele, Moiola Christian",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/s-angheben/PlayAndGomme/issues"
-  },
-  "homepage": "https://github.com/s-angheben/PlayAndGomme#readme",
   "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "googleapis": "^100.0.0",
+    "http-errors": "~1.6.3",
     "mongoose": "^6.3.3",
+    "morgan": "~1.9.1",
     "nodemon": "^2.0.16",
+    "pug": "^3.0.2",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0"
   }

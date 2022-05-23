@@ -1,0 +1,104 @@
+//extends layout
+
+head 
+    title Visualizzadate
+    link(rel='stylesheet', href='/stylesheets/visualdata.css')
+
+
+body(background="images/sfondo.jpg")
+    h1(class="tit") Prenota Appuntamento 
+    h2(class="sottotit") Slot orari disponibili: 
+    div(class="contgiorno" id="titol") 
+        select(name="giorno" id="sel_giorno" class="selgiorno" href="javascript:void(0)" onChange="barra()") 
+    div(class="tabella" id="div_tabella")
+        p(class="festivo" id="fest") Giorno festivo!
+        table(class="tablee" id="tab") 
+            tr 
+                td 
+                    button(class="slot" id="1") 8:00
+                td
+                    button(class="slot" id="2") 8:15
+                td
+                    button(class="slot" id="3") 8:30
+                td
+                    button(class="slot" id="4") 8:45
+                td
+                    button(class="slot" id="5") 9:00
+                td
+                    button(class="slot" id="6") 9:15
+            tr 
+                td 
+                    button(class="slot" id="7") 9:30
+                td
+                    button(class="slot" id="8") 9:45
+                td
+                    button(class="slot" id="9") 10:00
+                td
+                    button(class="slot" id="10") 10:15
+                td
+                    button(class="slot" id="11") 10:30
+                td
+                    button(class="slot" id="12") 10:45
+            tr 
+                td 
+                    button(class="slot" id="13") 11:00
+                td
+                    button(class="slot" id="14") 11:15
+                td
+                    button(class="slot" id="15") 11:30
+                td
+                    button(class="slot" id="16") 11:45
+                td
+                    button(class="slot" id="17") 13:00
+                td
+                    button(class="slot" id="18") 13:15
+            tr 
+                td 
+                    button(class="slot" id="19") 13:30
+                td
+                    button(class="slot" id="20") 13:45
+                td
+                    button(class="slot" id="21") 14:00
+                td
+                    button(class="slot" id="22") 14:15
+                td
+                    button(class="slot" id="23") 14:30
+                td
+                    button(class="slot" id="24") 14:45
+            tr 
+                td 
+                    button(class="slot" id="25") 15:00
+                td
+                    button(class="slot" id="26") 15:15
+                td
+                    button(class="slot" id="27") 15:30
+                td
+                    button(class="slot" id="28") 15:45
+                td
+                    button(class="slot" id="29") 16:00
+                td
+                    button(class="slot" id="30") 16:15
+            tr 
+                td 
+                    button(class="slot" id="31") 16:30
+                td
+                    button(class="slot" id="32") 16:45
+                td
+                    button(class="slot" id="33") 17:00
+                td
+                    button(class="slot" id="34") 17:15
+                td
+                    button(class="slot" id="35") 17:30
+                td
+                    button(class="slot" id="36") 17:45
+    button(class="indietro") Torna indietro 
+    button(class="avanti") Salva e continua
+
+
+    //block content -> definito nel layout
+    // per importare il pezzo di grafica bloccato fare :
+    //extends layout
+    //nella pagina dove voglio importare il pezzo di grafica
+    //implementare barra di navigazione con block content #3
+//script(src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous")
+script(src='javascripts/visualdata.js')
