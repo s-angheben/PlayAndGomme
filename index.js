@@ -1,4 +1,4 @@
-const app = require('./app/app.js');
+const app = require('./app.js');
 const mongoose = require('mongoose');
 
 const port = 8080;
