@@ -19,8 +19,8 @@ const swaggerDocument = swaggerJsDoc(swaggerOptions);
 app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
-const appointments = require('./appointments.js');
-const tires = require('./tires.js');
+const appointments = require('./app/appointments.js');
+const tires = require('./app/tires.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
