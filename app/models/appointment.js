@@ -21,11 +21,11 @@ var Schema = mongoose.Schema;
 
 
 const materialOrderedSchema = new Schema({
-    "materialId" : {
+    materialId : {
         type: String,
         required: true
     },
-    "quantity" : {
+    quantity : {
 	    type: Number,
 	    min: 1,
         required: true

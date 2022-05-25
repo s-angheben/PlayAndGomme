@@ -86,5 +86,74 @@ router.get('/:id', async (req, res) => {
     
 
 //post
+
+function extractValue (linkValue) {
+	if(!linkValue instanceof String) throw 'expected a link to the resource';
+	return linkValue.substring(linkValue.lastIndexOf('/') + 1);
+}
+
+async function checkMaterial (materialObject) {
+	if(materialObject.materialId == null) throw 'missing material id';
+	if(materialObject.quantity == null)   throw 'missing material quantity';
+	if(isNaN(materialObject.quantity))    throw 'material quantity is not a number';
+
+	let materialId = extractValue(materialObject.materialId);
+	// check existance
+	let material = await Material.findById(materialId);
+	if (material == null)                     throw 'material does not exist';
+	// check available quantity
+	let availableQuantity = await Material.getquantity(materiaId);
+	if (availableQuantity < quantity)     throw 'quantity not sufficient';
+
+	return {
+			"materialId" : materialId,
+			"quantity" : materialObject.quantity
+	}
+}
+
+async function checkMaterials (materials) {
+	if (!Array.isArray(materials))   throw 'materials is not an array';
+	return materials.map(checkMaterial);
+}
+
+async function checkDate (date) {
+   //check date
+   return date;
+}
+
+async function extractAppointmentData(req) {
+	if (req == null)               throw 'empty request';
+	if (req.service == null)       throw 'service not specified';
+	if (req.userId == null)        throw 'user not specified';
+	if (req.materials == null)     throw 'materials not specified';
+	if (req.date == null)          throw 'date not specified';
+	if (req.alreadyPaid == null)   throw 'alreadyPaid not specified';
+
+	let userId = extractValue (req.userId)
+//      let user = await User.findById(userId);
+	if (user == null)       throw 'user does not exist';
+
+	let material = checkMaterials(req.materials);  
+	let date = checkDate(req.date);
+
+	return new Appointment ({
+			appointmentPlaced: Date(),
+			service : req.service,
+			userId : userId,
+			materials : material,
+			date : date,
+			alreadyPaid : req.alreadyPaid
+	})
+}
+
+
+router.post('', async (req, res) => {
+	try {
+			app = extractAppointmentData(req);
+	} catch (e) {
+			return res.status(400).json({ e });
+	}
+	return res.location("/api/v2/appointments/" + app.id).status(201).send();
+});
 	   
 module.exports = router
