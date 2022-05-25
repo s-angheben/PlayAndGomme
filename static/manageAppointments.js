@@ -1,7 +1,7 @@
 function loadAppointments() {
     const appointmentsTable = document.getElementById('appointmentsTable');
 
-    fetch('../api/v1/appointments')
+    fetch('../api/v2/appointments')
 	.then(response => response.json())
 	.then(data => {
 

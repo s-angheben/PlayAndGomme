@@ -19,6 +19,12 @@ router.get('/',async(req, res) =>{
     else res.status(200).json(allUsers.map(userToLink));
 })
 
+router.get('/:id',async(req, res) =>{
+    let user = await User.findById(req.params.id);
+    if(user == null) res.status(404).json({ error: 'Not found'});
+    else res.status(200).json(userToLink(user));
+})
+
 router.post('', async (req, res) => {
     if (req.body.username == null) {
         return res.status(400).json({ error: 'missing username field'});

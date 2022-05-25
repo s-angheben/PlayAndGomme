@@ -4,12 +4,12 @@ const Appointment = require('./models/appointment');
 
 function appointmentToLink(app) {
     return {
-		self: '/api/v1/appointments/' + app.id,
+		self: '/api/v2/appointments/' + app.id,
 		service : app.service,
-		userId : '/api/v1/users/' + app.userId,
+		userId : '/api/v2/users/' + app.userId,
 		materials : app.materials.map( (item) => {
 		    return {
-			materialId : '/api/v1/materials/' + item.materialId,
+			materialId : '/api/v2/materials/' + item.materialId,
 			quantity : item.quantity
 		    };
 		}),

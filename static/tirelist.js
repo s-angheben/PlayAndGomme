@@ -1,6 +1,6 @@
 function tiretable(){
     const tabella = document.getElementById('tabella');
-        fetch('../api/v1/tires')
+        fetch('../api/v2/tires')
         .then(response => response.json())
         .then(data => {
             console.log(data);
