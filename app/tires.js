@@ -4,7 +4,7 @@ const Tire = require('./models/tire');
 
 function TireToLink(totire){
     return {
-            self: '/api/v1/tires/' + totire.id,
+            self: '/api/v2/tires/' + totire.id,
             brand: totire.brand,
             model: totire.model,
             length: totire.length,
