@@ -88,6 +88,22 @@ router.get('/:id',async (req,res) =>{
     else res.status(200).json(TireToLink(singleTire));
 })
 
+router.put('/:id',async (req,res) =>{
+    let singleTire = await Tire.findById(req.params.id);
+    if(singleTire == null) res.status(404).json({ error: 'Not found'});
+    if(Number.isInteger(Number(req.body.quantity)) == false || Number(req.body.quantity) < 0 ||
+        Number.isFinite(Number(req.body.price)) == false || Number(req.body.price) <= 0 ){
+        return res.status(400).json({ error: 'Errore tipo'});
+    }
+    singleTire.quantity = req.body.quantity;
+    singleTire.price = req.body.price;
+    singleTire = await singleTire.save();
+
+    let tireId = singleTire.id;
+    console.log('Tire saved sucesfully');
+    res.location("/api/v2/tires/" + tireId).status(201).send(); 
+})
+
 router.post('', async (req, res) => {
 
     const isError = new Boolean(req.body.brand == '' || req.body.model == '' || req.body.length == '' || req.body.height == '' ||
@@ -106,12 +122,15 @@ router.post('', async (req, res) => {
         return res.status(400).json({ error: 'fill in all filds'});
     }
     if(isNumber == true){
+        console.log('Errore di tipo del/dei campo/i');
         return res.status(400).json({ error: 'type error'});
     }
     if(isNumberValid == true){
+        console.log('Numero/i non valido');
         return res.status(400).json({ error: 'number not valid'});
     }
     if(req.body.type != 'invernali' && req.body.type != 'estive' && req.body.type != 'quattro_stagioni'){
+        console.log('Campo Tipo Errato');
         return res.status(400).json({ error: 'type not valid. Valid option: invernali, estive, quattro_stagioni'});
     }
     let tire = new Tire({

@@ -13,7 +13,7 @@ function tiretable(){
 }
 tiretable();
 
-function insertBook()
+function insertTire()
 {
     //get the book title
     var tireBrand = document.getElementById("tireBrand").value;
@@ -33,9 +33,8 @@ function insertBook()
     })
     .then((resp) => {
         console.log(resp);
-        tiretable();
         return;
     })
     .catch( error => console.error(error) ); // If there is any error you will catch them here
-
+    window.location.reload(true);
 };
