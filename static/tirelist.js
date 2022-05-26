@@ -12,3 +12,30 @@ function tiretable(){
         });
 }
 tiretable();
+
+function insertBook()
+{
+    //get the book title
+    var tireBrand = document.getElementById("tireBrand").value;
+    var tireModel = document.getElementById("tireModel").value;
+    var tireLength = document.getElementById("tireLength").value;
+    var tireHeight = document.getElementById("tireHeight").value;
+    var tireDiameter = document.getElementById("tireDiameter").value;
+    var tireQuantity = document.getElementById("tireQuantity").value;
+    var tireType = document.getElementById("tireType").value;
+    var tirePrice = document.getElementById("tirePrice").value;
+
+    fetch('../api/v2/tires', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify( { brand: tireBrand, model: tireModel, length: tireLength, height: tireHeight,
+        diameter: tireDiameter, quantity: tireQuantity, type: tireType, price: tirePrice } ),
+    })
+    .then((resp) => {
+        console.log(resp);
+        tiretable();
+        return;
+    })
+    .catch( error => console.error(error) ); // If there is any error you will catch them here
+
+};

@@ -8,6 +8,17 @@
     <h1 class="tire">Lista Pneumatici</h1>
     <a class="tire" href="home.html">Back</a>
     <hr>
+    <form action="api/v1/tires" method="post" name="tireform" id="tireform">
+        <input name="brand" value="brand" id="tireBrand"/>
+        <input name="model" value="model" id="tireModel"/>
+        <input name="length" value="length" id="tireLength"/>
+        <input name="height" value="height" id="tireHeight"/>
+        <input name="diameter" value="diameter" id="tireDiameter"/>
+        <input name="quantity" value="quantity" id="tireQuantity"/>
+        <input name="type" value="type" id="tireType"/>
+        <input name="price" value="price" id="tirePrice"/>
+        <button type="button" onclick="insertBook()">Insert new Tire</button>
+      </form>
     <table id="tabella">
         <tr><td>Marca</td><td>Modello</td><td>Tipologia</td><td>Dimensioni</td><td>Quantità</td><td>Prezzo</td></tr>
     </table>
