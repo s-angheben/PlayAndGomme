@@ -1,10 +1,15 @@
 const express = require('express');
+const { default: mongoose } = require('mongoose');
 const router = express.Router();
 const Appointment = require('./models/appointment');
+const Tire = require('./models/tire');
+const User = require('./models/user');
+const ApiError = require('./utils/apiError')
 
 function appointmentToLink(app) {
     return {
 		self: '/api/v2/appointments/' + app.id,
+		appointmentPlaced : app.appointmentPlaced,
 		service : app.service,
 		userId : '/api/v2/users/' + app.userId,
 		materials : app.materials.map( (item) => {
@@ -92,68 +97,95 @@ function extractValue (linkValue) {
 	return linkValue.substring(linkValue.lastIndexOf('/') + 1);
 }
 
-async function checkMaterial (materialObject) {
-	if(materialObject.materialId == null) throw 'missing material id';
-	if(materialObject.quantity == null)   throw 'missing material quantity';
-	if(isNaN(materialObject.quantity))    throw 'material quantity is not a number';
+// TODO check mongoose valid id
 
-	let materialId = extractValue(materialObject.materialId);
+async function checkMaterial (materialRequested) {
+	if(materialRequested.materialId == null)                 throw new ApiError(400, 'missing material id');
+
+	let materialId = extractValue(materialRequested.materialId);
+	if(materialRequested.quantity == null)                   throw new ApiError(400, `missing material quantity of ${materialId}`);
+	if(isNaN(materialRequested.quantity))                    throw new ApiError(400, `material quantity of ${materialId} is not a number`);
+
 	// check existance
-	let material = await Material.findById(materialId);
-	if (material == null)                     throw 'material does not exist';
-	// check available quantity
-	let availableQuantity = await Material.getquantity(materiaId);
-	if (availableQuantity < quantity)     throw 'quantity not sufficient';
+	let materialDb = await Tire.findById(materialId);
+	if (materialDb == null)                                   throw new ApiError(404, `material ${materialId} does not exist`);
+	if (materialDb.quantity < materialRequested.quantity)     throw new ApiError(400, `quantity of ${materialId} not sufficient`);
+
+	// TODO update quantity
 
 	return {
 			"materialId" : materialId,
-			"quantity" : materialObject.quantity
+			"quantity" : materialRequested.quantity
 	}
 }
 
 async function checkMaterials (materials) {
-	if (!Array.isArray(materials))   throw 'materials is not an array';
-	return materials.map(checkMaterial);
+	if (materials == null)         throw new ApiError(400, 'materials not specified');
+	if (!Array.isArray(materials)) throw new ApiError(400, 'materials is not a list');
+
+	if (materials.length)          return await Promise.all(materials.map(checkMaterial));
+	else                           return [];
 }
 
 async function checkDate (date) {
-   //check date
-   return date;
+	if (date == null)              throw new ApiError(400, 'date not specified');
+   //TODO check date
+	return date;
+}
+
+function checkService (service) {
+	if (service == null)                                                 throw new ApiError(400, 'service not specified');
+	if (!['riparazione', 'controllo', 'cambio_gomme'].includes(service)) throw new ApiError(400, 'service not valid');
+
+	return service;
+}
+
+async function checkUser(user) {
+	if (user == null)                           throw new ApiError(400, 'user not specified');
+	let userId = extractValue (user)
+    let userDb = await User.findById(userId);
+	if (userDb == null)                         throw new ApiError(404, 'user does not exist');
+
+	return userId
+	// TODO check i'm the user
 }
 
 async function extractAppointmentData(req) {
-	if (req == null)               throw 'empty request';
-	if (req.service == null)       throw 'service not specified';
-	if (req.userId == null)        throw 'user not specified';
-	if (req.materials == null)     throw 'materials not specified';
-	if (req.date == null)          throw 'date not specified';
-	if (req.alreadyPaid == null)   throw 'alreadyPaid not specified';
+	if (req == null)                          throw new ApiError(400, 'empty request');
+	if (req.body.alreadyPaid == null)         throw new ApiError(400, 'alreadyPaid not specified');
 
-	let userId = extractValue (req.userId)
-//      let user = await User.findById(userId);
-	if (user == null)       throw 'user does not exist';
-
-	let material = checkMaterials(req.materials);  
-	let date = checkDate(req.date);
+	let service = checkService(req.body.service);
+	let userId = await checkUser(req.body.user);
+	let materials = await checkMaterials(req.body.materials);  
+	let date = await checkDate(req.body.date);
 
 	return new Appointment ({
 			appointmentPlaced: Date(),
-			service : req.service,
+			service : service,
 			userId : userId,
-			materials : material,
+			materials : materials,
 			date : date,
-			alreadyPaid : req.alreadyPaid
+			alreadyPaid : req.body.alreadyPaid
 	})
 }
 
 
 router.post('', async (req, res) => {
 	try {
-			app = extractAppointmentData(req);
+		app = await extractAppointmentData(req);
+		appSaved = app.save();
+		return res.location("/api/v2/appointments/" + appSaved.id).status(201).send();
 	} catch (e) {
-			return res.status(400).json({ e });
+		if (e instanceof ApiError) {
+			return res.status(e.statusCode).json({ "error": e.message })
+		} else if (e instanceof mongoose.Error) {
+			console.log(e)
+			return res.status(500).json({ "error": "db error" });
+		} else {
+			console.log(e)
+			return res.status(500).json({ "error": "internal error" });
+		}
 	}
-	return res.location("/api/v2/appointments/" + app.id).status(201).send();
 });
 	   
 module.exports = router
