@@ -21,6 +21,7 @@ app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const appointments = require('./appointments.js');
 const tires = require('./tires.js');
+const datae = require('./data.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,6 +32,7 @@ app.use('/', express.static('static'));
 
 app.use('/api/v1/appointments', appointments);
 app.use('/api/v1/tires', tires);
+app.use('/api/v1/data', datae);
 
 app.use((req,res) => {
     res.status(404);
