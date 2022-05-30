@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const tokenHandler = require('./tokenHandler.js');
+const authenticate = require('./authenticate.js');
 
 const swaggerOptions = {
     definition: {
@@ -28,8 +30,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/', express.static('static'));
 
-// API
 
+//Middleware
+app.use('/api/v2/login', tokenHandler);
+
+app.use('/api/v2/appointments',authenticate);
+
+// API
 app.use('/api/v2/appointments', appointments);
 app.use('/api/v2/tires', tires);
 app.use('/api/v2/users', users);
