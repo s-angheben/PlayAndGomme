@@ -88,15 +88,52 @@ router.get('/:id',async (req,res) =>{
     else res.status(200).json(TireToLink(singleTire));
 })
 
-router.put('/:id',async (req,res) =>{
-    let singleTire = await Tire.findById(req.params.id);
-    if(singleTire == null) res.status(404).json({ error: 'Not found'});
-    if(Number.isInteger(Number(req.body.quantity)) == false || Number(req.body.quantity) < 0 ||
-        Number.isFinite(Number(req.body.price)) == false || Number(req.body.price) <= 0 ){
-        return res.status(400).json({ error: 'Errore tipo'});
+router.delete('/:id', async (req, res) => {
+    let tire = await Tire.findById(req.params.id);
+    if (tire == null) {
+        res.status(404).send()
+        console.log('book not found')
+        return;
     }
-    singleTire.quantity = req.body.quantity;
-    singleTire.price = req.body.price;
+    await tire.deleteOne()
+    console.log('tire removed')
+    res.status(204).send()
+});
+
+router.put('/:id',async (req,res) =>{
+    let singleTire = await Tire.findById(req.params.id).exec();
+    if(singleTire == null) res.status(404).json({ error: 'Not found'});
+
+    let keys = Object.keys(req.body);
+
+    for(let i=0; i<keys.length; i++){
+        if(req.body[keys[i]] == ''){
+            console.log('error');
+            return res.status(400).json({ error: 'the variable ' + keys[i] + ' has not a value'});
+        }
+        switch(keys[i]){
+            case 'type':
+                if(req.body[keys[i]] != 'invernali' && req.body[keys[i]] != 'estive' && req.body[keys[i]] != 'quattro_stagioni'){
+                    return res.status(400).json({ error: 'type not valid. Valid option: invernali, estive, quattro_stagioni'});
+                }
+                break;
+            case 'length': 
+            case 'height':
+            case 'diameter':
+            case 'quantity':
+                if(isNumeric(req.body[keys[i]]) == false || Number.isInteger(Number(req.body[keys[i]])) == false || Number(req.body[keys[i]]) < 0){
+                    return res.status(400).json({ error: 'the variable ' + keys[i] + ' has not a valid value'});
+                }
+                break; 
+            case 'price':
+                if(isNumeric(req.body[keys[i]]) == false || Number(req.body[keys[i]]) < 0){
+                    return res.status(400).json({ error: 'the variable ' + keys[i] + ' has not a valid value'});
+                }
+                break;
+        }
+        singleTire[keys[i]] = req.body[keys[i]];
+    }
+
     singleTire = await singleTire.save();
 
     let tireId = singleTire.id;
