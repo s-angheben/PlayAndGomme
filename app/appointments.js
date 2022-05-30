@@ -155,7 +155,7 @@ async function extractAppointmentData(req) {
 	if (req.body.alreadyPaid == null)         throw new ApiError(400, 'alreadyPaid not specified');
 
 	let service = checkService(req.body.service);
-	let userId = await checkUser(req.body.user);
+	let userId = await checkUser(req.body.userId);
 	let materials = await checkMaterials(req.body.materials);  
 	let date = await checkDate(req.body.date);
 
