@@ -88,17 +88,88 @@ router.get('/:id',async (req,res) =>{
     else res.status(200).json(TireToLink(singleTire));
 })
 
+
+/**
+ *  @openapi
+ *  /api/v1/tires/{id}:
+ *  delete:
+ *      description: Delete the tire with that specific id.
+ *      summary: Delete the tire with id={id}
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            type: string
+ *            description: The ID of the tires to delete.
+ *            example: 6287f53594cf2c342a3a9d81
+ *      responses:
+ *          204:
+ *              description: Tire removed correctly
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: string
+ *                          example: Tire removed
+ *          404:
+ *              description: Tire not found
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: string
+ *                          example: Not found
+ */
+
 router.delete('/:id', async (req, res) => {
     let tire = await Tire.findById(req.params.id);
     if (tire == null) {
-        res.status(404).send()
-        console.log('book not found')
+        res.status(404).json({error: 'tire not found'})
+        console.log('tire not found')
         return;
     }
     await tire.deleteOne()
     console.log('tire removed')
-    res.status(204).send()
+    res.status(204).json({error: 'tire removed correctly'});
 });
+
+
+
+/**
+ *  @openapi
+ *  /api/v1/tires/{id}:
+ *  put:
+ *      description: Update the tire with that specific id. In the body of the method you can insert all the data you want to update; the data that will not be inserted in the body will remain the same as before the call.
+ *      summary: used to update the tire with id={id}
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            type: string
+ *            description: The ID of the tires to delete.
+ *            example: 6287f53594cf2c342a3a9d81
+ *      requestBody:
+ *          required: false
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Tire'
+ *      responses:
+ *          201:
+ *              description: Tire update correctly
+ *          404:
+ *              description: Tire id incorrect
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: string
+ *                          example: Not found
+ *          400:
+ *              description: A field of the body is empty or A field of the body has not a valid value
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: string
+ *                          example: the variable {field} has not a *valid* value
+ */
 
 router.put('/:id',async (req,res) =>{
     let singleTire = await Tire.findById(req.params.id).exec();
@@ -140,6 +211,30 @@ router.put('/:id',async (req,res) =>{
     console.log('Tire saved sucesfully');
     res.location("/api/v2/tires/" + tireId).status(201).send(); 
 })
+
+/**
+ *  @openapi
+ *  /api/v1/tires:
+ *  post:
+ *      description: Create a new Tire
+ *      summary: used to create a new tire
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Tire'
+ *      responses:
+ *          201:
+ *              description: Tire Saved correctly
+ *          400:
+ *              description: A field of the body is empty or A field of the body has not a valid value
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: string
+ *                          example: Type error or Fill in all filds
+ */
 
 router.post('', async (req, res) => {
 
