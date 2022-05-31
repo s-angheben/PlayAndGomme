@@ -51,7 +51,7 @@ function appointmentToLink(app) {
 
 router.get('', async(req, res) => {
     let allAppointments = await Appointment.find();
-    if (allAppointments == null) res.status(404).json({ error: 'Not found' });
+	if (allAppointments == null) res.status(404).json({ error: 'Not found' });
     else res.status(200).json(allAppointments.map( appointmentToLink ));
 })
 
@@ -85,8 +85,13 @@ router.get('', async(req, res) => {
 
 router.get('/:id', async (req, res) => {
     let app = await Appointment.findById(req.params.id);
+	if (app == null) throw new ApiError(404, "Appointment not found");
+	
+	res.status(200).json(appointmentToLink(app));
+/*
     if (app == null) res.status(404).json({ error: 'Not found'});
     else res.status(200).json(appointmentToLink(app));
+*/
 });
     
 
@@ -171,21 +176,17 @@ async function extractAppointmentData(req) {
 
 
 router.post('', async (req, res) => {
-	try {
-		app = await extractAppointmentData(req);
-		appSaved = app.save();
-		return res.location("/api/v2/appointments/" + appSaved.id).status(201).send();
-	} catch (e) {
-		if (e instanceof ApiError) {
-			return res.status(e.statusCode).json({ "error": e.message })
-		} else if (e instanceof mongoose.Error) {
-			console.log(e)
-			return res.status(500).json({ "error": "db error" });
-		} else {
-			console.log(e)
-			return res.status(500).json({ "error": "internal error" });
-		}
-	}
+	app = await extractAppointmentData(req);
+	appSaved = app.save();
+	res.location("/api/v2/appointments/" + appSaved.id).status(201).send();
+});
+
+
+router.delete('/:id', async (req, res) => {
+    let app = await Appointment.findByIdAndRemove(req.params.id);
+	console.log(app);
+
+    return res.status(200).json({});
 });
 	   
 module.exports = router

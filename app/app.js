@@ -4,6 +4,9 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const cors = require('cors');
 
+const ApiError = require('./utils/apiError')
+var mongoose = require('mongoose');
+
 app.use(cors())
 
 const swaggerOptions = {
@@ -41,6 +44,27 @@ app.use('/api/v2/users', users);
 app.use((req,res) => {
     res.status(404);
     res.json({ error: 'Not found' });
+});
+
+app.use(function handleAPIError(error, req, res, next) {
+    if (error instanceof ApiError) {
+        console.log(error.message);
+		return res.status(error.statusCode).json({ "error": error.message }).send();
+    }
+    next(error);
+});
+
+app.use(function handleMongoError(error, req, res, next) {
+    if (error instanceof mongoose.Error) {
+		console.log(error)
+		return res.status(500).json({ "error": "db error" }).send();
+    }
+    next(error);
+});
+
+app.use(function defaultError(error, req, res, next) {
+    console.log(error)
+    return res.status(500).json({ "error": "internal error" }).send();
 });
 
 module.exports = app;
