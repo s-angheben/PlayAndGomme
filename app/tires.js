@@ -25,7 +25,7 @@ function isNumeric(num){
 /**
  * @openapi
  * 
- *  /api/v1/tires:
+ *  /api/v2/tires:
  *      get:
  *          description: Gets the list of all tires that the tire dealer have.
  *          summary: View all the tires
@@ -55,7 +55,7 @@ router.get('/',async(req, res) =>{
 
 /**
  *  @openapi
- *  /api/v1/tires/{id}:
+ *  /api/v2/tires/{id}:
  *  get:
  *      description: Get a json containing the tire with that specific id.
  *      summary: View the tire with that specific id
@@ -91,7 +91,7 @@ router.get('/:id',async (req,res) =>{
 
 /**
  *  @openapi
- *  /api/v1/tires/{id}:
+ *  /api/v2/tires/{id}:
  *  delete:
  *      description: Delete the tire with that specific id.
  *      summary: Delete the tire with id={id}
@@ -135,7 +135,7 @@ router.delete('/:id', async (req, res) => {
 
 /**
  *  @openapi
- *  /api/v1/tires/{id}:
+ *  /api/v2/tires/{id}:
  *  put:
  *      description: Update the tire with that specific id. In the body of the method you can insert all the data you want to update; the data that will not be inserted in the body will remain the same as before the call.
  *      summary: used to update the tire with id={id}
@@ -168,7 +168,7 @@ router.delete('/:id', async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          type: string
- *                          example: the variable {field} has not a *valid* value
+ *                          example: the variable {field} has not a (valid) value
  */
 
 router.put('/:id',async (req,res) =>{
@@ -214,7 +214,7 @@ router.put('/:id',async (req,res) =>{
 
 /**
  *  @openapi
- *  /api/v1/tires:
+ *  /api/v2/tires:
  *  post:
  *      description: Create a new Tire
  *      summary: used to create a new tire
