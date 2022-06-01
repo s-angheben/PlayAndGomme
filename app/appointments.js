@@ -1,4 +1,5 @@
 const express = require('express');
+const req = require('express/lib/request');
 const { default: mongoose } = require('mongoose');
 const router = express.Router();
 const Appointment = require('./models/appointment');
@@ -51,8 +52,9 @@ function appointmentToLink(app) {
 
 router.get('', async(req, res) => {
     let allAppointments = await Appointment.find();
-	if (allAppointments == null) res.status(404).json({ error: 'Not found' });
-    else res.status(200).json(allAppointments.map( appointmentToLink ));
+	if (allAppointments == null) throw new ApiError(404, "Appointments not found");
+    
+	res.status(200).json(allAppointments.map( appointmentToLink ));
 })
 
 /**
@@ -88,10 +90,6 @@ router.get('/:id', async (req, res) => {
 	if (app == null) throw new ApiError(404, "Appointment not found");
 	
 	res.status(200).json(appointmentToLink(app));
-/*
-    if (app == null) res.status(404).json({ error: 'Not found'});
-    else res.status(200).json(appointmentToLink(app));
-*/
 });
     
 
@@ -155,10 +153,17 @@ async function checkUser(user) {
 	// TODO check i'm the user
 }
 
-async function extractAppointmentData(req) {
-	if (req == null)                          throw new ApiError(400, 'empty request');
-	if (req.body.alreadyPaid == null)         throw new ApiError(400, 'alreadyPaid not specified');
+function checkAlreadyPaid(alreadyPaid) {
+	if (alreadyPaid == null)             throw new ApiError(400, 'alreadyPaid not specified');
+	if (typeof alreadyPaid != "boolean") throw new ApiError(400, 'alreadyPaid is not a boolean');
 
+	return alreadyPaid
+}
+
+async function extractAppointmentData(req) {
+	if (req.body == null)                          throw new ApiError(400, 'empty request');
+
+	let alreadyPaid = checkAlreadyPaid(req.body.alreadyPaid);
 	let service = checkService(req.body.service);
 	let userId = await checkUser(req.body.userId);
 	let materials = await checkMaterials(req.body.materials);  
@@ -170,10 +175,9 @@ async function extractAppointmentData(req) {
 			userId : userId,
 			materials : materials,
 			date : date,
-			alreadyPaid : req.body.alreadyPaid
+			alreadyPaid : alreadyPaid
 	})
 }
-
 
 router.post('', async (req, res) => {
 	app = await extractAppointmentData(req);
@@ -182,9 +186,43 @@ router.post('', async (req, res) => {
 });
 
 
+router.put('/:id', async (req, res) => {
+	if (req.body == null)                          throw new ApiError(400, 'empty request');
+
+    let app = await Appointment.findById(req.params.id);
+	if (app == null) throw new ApiError(404, "Appointment not found");
+
+	const appkeys = Object.keys(app._doc);
+	console.log(appkeys);
+	console.log(typeof(app));
+
+	let PartialApp = {};
+
+	if (!!req.body.service) {
+		PartialApp['service'] = checkService(req.body.service);
+	}
+	if (!!req.body.userId) {
+		PartialApp.userId = await checkUser(req.body.userId);
+	}
+	if (!!req.body.materials) {
+		PartialApp.materials = await checkMaterials(req.body.materials);  
+	}
+	if (!!req.body.date) {
+		PartialApp.date = await checkDate(req.body.date);  
+	}
+	if (!!req.body.alreadyPaid) {
+		PartialApp.alreadyPaid = checkAlreadyPaid(req.body.alreadyPaid);
+	}
+
+	let updatedApp = await Appointment.findOneAndUpdate({ _id: req.params.id }, PartialApp, {
+		new: true
+	  });
+	
+	return res.status(200).json({});
+});
+
 router.delete('/:id', async (req, res) => {
-    let app = await Appointment.findByIdAndRemove(req.params.id);
-	console.log(app);
+    await Appointment.findByIdAndRemove(req.params.id);
 
     return res.status(200).json({});
 });

@@ -49,6 +49,7 @@ app.use((req,res) => {
 app.use(function handleAPIError(error, req, res, next) {
     if (error instanceof ApiError) {
         console.log(error.message);
+        console.log(error.statusCode);
 		return res.status(error.statusCode).json({ "error": error.message }).send();
     }
     next(error);
@@ -56,8 +57,14 @@ app.use(function handleAPIError(error, req, res, next) {
 
 app.use(function handleMongoError(error, req, res, next) {
     if (error instanceof mongoose.Error) {
-		console.log(error)
-		return res.status(500).json({ "error": "db error" }).send();
+        if (error instanceof mongoose.Error.CastError) {
+            console.log(error);
+            console.log(typeof(error));
+	    	return res.status(500).json({ "error": "cast db error" }).send();
+        } else { 
+	    	console.log(error)
+	    	return res.status(500).json({ "error": "db error" }).send();
+        }
     }
     next(error);
 });
