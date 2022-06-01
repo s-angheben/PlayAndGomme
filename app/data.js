@@ -22,7 +22,6 @@ const auth = new google.auth.JWT(
 
 //get calendario eventi
 const getEvents = async (dateTimeStart, dateTimeEnd) => {
-
     try {
         let response = await calendar.events.list({
             auth: auth,
@@ -40,7 +39,25 @@ const getEvents = async (dateTimeStart, dateTimeEnd) => {
     }
 };
 
-
+//inserisci nuovo evento google calendar
+const insertEvent = async (event) => {
+    try {
+        let response = await calendar.events.insert({
+            auth: auth,
+            calendarId: calendarId,
+            resource: event
+        });
+    
+        if (response['status'] == 200 && response['statusText'] === 'OK') {
+            return 1;
+        } else {
+            return 0;
+        }
+    } catch (error) {
+        console.log(`Error at insertEvent --> ${error}`);
+        return 0;
+    }
+};
 
 router.get('/',async(req, res) =>{
     var array = [new Date()];
@@ -80,5 +97,36 @@ router.get('/',async(req, res) =>{
             console.log('errore!');
         }); 
 });
+
+router.post('', async (req, res) => {
+    var data3 = new Date(req.body.slot);
+    var data4 = new Date(data3);
+    data4.setMinutes(data3.getMinutes() + (15*req.body.durataSlot));
+    console.log(data3);
+    console.log(data4);
+    let event = {
+             'summary': `Appuntamento Gommista`,
+             'description': `Appuntamento prenotato tramite sito web`,
+             'start': {
+                 'dateTime': data3,
+                 'timeZone': 'Europe/Rome'
+             },
+             'end': {
+                 'dateTime': data4,
+                 'timeZone': 'Europe/Rome'
+             }
+    };
+    insertEvent(event)
+        .then((ris) => {
+            console.log(ris);
+            res.status(201).json({status: 201, successo: 'caricamento avvenuto con successo!'});
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(400).json({status: 400, successo: 'caricamento fallito: ' + err});
+    });
+});
+
+
 
 module.exports = router;  

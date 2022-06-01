@@ -32,7 +32,7 @@ app.use('/', express.static('static'));
 
 app.use('/api/v1/appointments', appointments);
 app.use('/api/v1/tires', tires);
-app.use('/api/v1/data', datae);
+app.use('/api/v2/data', datae);
 
 app.use((req,res) => {
     res.status(404);
