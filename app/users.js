@@ -13,6 +13,22 @@ function userToLink(user) {
 	};
 }
 
+function emailIsValid(email) {
+    var regex_email_valida = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regex_email_valida.test(email);
+}
+
+function phoneIsVaid(phone){
+    if(isNumeric(phone) == false || Number.isInteger(Number(phone)) == false || Number(phone) < 0 ||  phone.toString().split('').map(Number).length != 10){
+        return false;
+    }
+    return true;
+}
+
+function isNumeric(num){
+    return !isNaN(num)
+}
+
 router.get('/',async(req, res) =>{
     let allUsers = await User.find();
     if(allUsers == null) res.status(404).json({ error: 'Not found'});
@@ -46,5 +62,52 @@ router.post('', async (req, res) => {
     user = await user.save();
     res.location("/api/v2/users/" + user.id).status(201).send();
 });
+
+router.put('/:id', async (req,res) =>{
+    let user = await User.findById(req.params.id).exec();
+    if(user == null) res.status(404).json({ error: 'Not found'});
+
+    let keys = Object.keys(req.body);
+    for(let i=0; i<keys.length; i++){
+        if(req.body[keys[i]] == ''){
+            return res.status(400).json({ error: 'the variable ' + keys[i] + ' has not a value'});
+        }
+        switch(keys[i]){
+            case 'email':
+                if(emailIsValid(req.body[keys[i]]) == false){
+                    return res.status(400).json({error: 'email field is not valid'});
+                }
+                break;
+            case 'phone':
+                if(phoneIsVaid(req.body[keys[i]]) == false){
+                    return res.status(400).json({ error: 'phone number is not valid'});
+                }
+                break;
+            case 'username':
+                let alreadyExist = await User.findOne({username : req.body[keys[i]]});
+                if (alreadyExist != null) {
+                    return res.status(409).json({ error: 'username already exist' });
+                }
+                break;
+        }
+        user[keys[i]] = req.body[keys[i]];
+    }
+
+    user = await user.save();
+    console.log('User update sucesfully');
+    res.location("/api/v2/users/" + user.id).status(201).send();
+});
+
+router.delete('/:id', async (req, res) => {
+    let user = await User.findById(req.params.id).exec();
+    if (user == null) {
+        res.status(404).json({error: 'user not found'})
+        return;
+    }
+    await user.deleteOne()
+    res.location("/api/v2/users").status(204).send();
+});
+
+
 
 module.exports = router;
