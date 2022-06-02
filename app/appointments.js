@@ -29,12 +29,12 @@ function appointmentToLink(app) {
 
 /**
  *  @openapi
- *  /api/v1/appointments:
+ *  /api/v2/appointments:
  *      get:
  *          summary: Returns all the appointments
  *          responses:
  *              200:
- *                  description: A list of appointments
+ *                  description: return the list of appointments
  *                  content:
  *                      application/json:
  *                          schema:
@@ -48,6 +48,13 @@ function appointmentToLink(app) {
  *                          schema:
  *                              type: string
  *                              example: Not found
+ *              500:
+ *                  description: database or internal error
+ *                  content: 
+ *                      application/json:
+ *                          schema:
+ *                              type: string
+ *                              example: internal error
  */
 
 router.get('', async(req, res) => {
@@ -59,7 +66,7 @@ router.get('', async(req, res) => {
 
 /**
  *  @openapi
- *  /api/v1/appointments/{id}:
+ *  /api/v2/appointments/{id}:
  *      get:
  *          summary: Returns an appointment by ID
  *          parameters:
@@ -71,7 +78,7 @@ router.get('', async(req, res) => {
  *                example: 6287f53594cf2c342a3a9d81
  *          responses:
  *              200:
- *                  description: an appointment
+ *                  description: return the requested appointment
  *                  content:
  *                      application/json:
  *                          schema:
@@ -83,6 +90,13 @@ router.get('', async(req, res) => {
  *                          schema:
  *                              type: string
  *                              example: Not found
+ *              500:
+ *                  description: database or internal error
+ *                  content: 
+ *                      application/json:
+ *                          schema:
+ *                              type: string
+ *                              example: internal error
  */
 
 router.get('/:id', async (req, res) => {
@@ -93,7 +107,43 @@ router.get('/:id', async (req, res) => {
 });
     
 
-//post
+/**
+ *  @openapi
+ *  /api/v2/appointments:
+ *      post:
+ *          summary: Create a new appointment
+ *          description: Used to create a new appointment
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/appointmentSchema'
+ *          responses:
+ *              201:
+ *                  description: appointment sucessfully created
+ *              400:
+ *                  description: invalid data
+ *                  content: 
+ *                      application/json:
+ *                          schema:
+ *                              type: string
+ *                              example: date not specified
+ *              404:
+ *                  description: resource not found
+ *                  content: 
+ *                      application/json:
+ *                          schema:
+ *                              type: string
+ *                              example: user does not exist
+ *              500:
+ *                  description: database or internal error
+ *                  content: 
+ *                      application/json:
+ *                          schema:
+ *                              type: string
+ *                              example: internal error
+ */
 
 function extractValue (linkValue) {
 	if(!linkValue instanceof String) throw 'expected a link to the resource';
@@ -181,20 +231,60 @@ async function extractAppointmentData(req) {
 
 router.post('', async (req, res) => {
 	app = await extractAppointmentData(req);
-	appSaved = app.save();
+	appSaved = await app.save();
 	res.location("/api/v2/appointments/" + appSaved.id).status(201).send();
 });
 
+/**
+ *  @openapi
+ *  /api/v2/appointments:
+ *      put:
+ *          summary: update field of a specific appointment
+ *          description: modify the value of the fields specified in the json request, the other data remains the same. 
+ *          parameters:
+ *              - in: path
+ *                name: id
+ *                required: true
+ *                type: string
+ *                description: The ID of the appointment to return.
+ *                example: 6287f53594cf2c342a3a9d81
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/appointmentSchema'
+ *          responses:
+ *              200:
+ *                  description: the appointment has been modified
+ *              400:
+ *                  description: invalid data
+ *                  content: 
+ *                      application/json:
+ *                          schema:
+ *                              type: string
+ *                              example: date not specified
+ *              404:
+ *                  description: resource not found
+ *                  content: 
+ *                      application/json:
+ *                          schema:
+ *                              type: string
+ *                              example: user does not exist
+ *              500:
+ *                  description: database or internal error
+ *                  content: 
+ *                      application/json:
+ *                          schema:
+ *                              type: string
+ *                              example: internal error
+ */
 
 router.put('/:id', async (req, res) => {
 	if (req.body == null)                          throw new ApiError(400, 'empty request');
 
     let app = await Appointment.findById(req.params.id);
 	if (app == null) throw new ApiError(404, "Appointment not found");
-
-	const appkeys = Object.keys(app._doc);
-	console.log(appkeys);
-	console.log(typeof(app));
 
 	let PartialApp = {};
 
@@ -218,8 +308,39 @@ router.put('/:id', async (req, res) => {
 		new: true
 	  });
 	
-	return res.status(200).json({});
+	return res.location("/api/v2/appointments/" + updatedApp._id).status(200).send();
 });
+
+/**
+ *  @openapi
+ *  /api/v2/appointments/{id}:
+ *      delete:
+ *          summary: delete an appointment by ID
+ *          parameters:
+ *              - in: path
+ *                name: id
+ *                required: true
+ *                type: string
+ *                description: The ID of the appointment to return.
+ *                example: 6287f53594cf2c342a3a9d81
+ *          responses:
+ *              200:
+ *                  description: appointment specified sucessfully deleted
+ *              404:
+ *                  description: Not found
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: string
+ *                              example: Not found
+ *              500:
+ *                  description: database or internal error
+ *                  content: 
+ *                      application/json:
+ *                          schema:
+ *                              type: string
+ *                              example: internal error
+ */
 
 router.delete('/:id', async (req, res) => {
     await Appointment.findByIdAndRemove(req.params.id);

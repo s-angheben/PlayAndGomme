@@ -11,7 +11,7 @@ var Schema = mongoose.Schema;
  *                  materialId:
  *                      type: string
  *                      required: true
- *                      example: /api/v1/materials/6287f53594cf2c342a3a9d81
+ *                      example: /api/v2/materials/6287f53594cf2c342a3a9d81
  *                  quantity:
  *                      type: integer
  *                      minimum: 1
@@ -41,7 +41,7 @@ const materialOrderedSchema = new Schema({
  *              properties:
  *                  self:
  *                      type: string
- *                      example: /api/v1/appointments/6287cd29675d72225161ca1c
+ *                      example: /api/v2/appointments/6287cd29675d72225161ca1c
  *                  service:
  *                      type: string
  *                      nullable: false
@@ -57,7 +57,7 @@ const materialOrderedSchema = new Schema({
  *                  userId:
  *                      type: string     
  *                      required: true 
- *                      example: /api/v1/users/6287cd29675d72225161ca1a
+ *                      example: /api/v2/users/6287cd29675d72225161ca1a
  *                  materials:
  *                      type: array
  *                      items: 
