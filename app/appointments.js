@@ -158,13 +158,16 @@ async function checkMaterial (materialRequested) {
 	let materialId = extractValue(materialRequested.materialId);
 	if(materialRequested.quantity == null)                   throw new ApiError(400, `missing material quantity of ${materialId}`);
 	if(isNaN(materialRequested.quantity))                    throw new ApiError(400, `material quantity of ${materialId} is not a number`);
+	if(materialRequested.quantity < 0) 						 throw new ApiError(400, `material quantity is not valid`); 				
 
-	// check existance
-	let materialDb = await Tire.findById(materialId);
-	if (materialDb == null)                                   throw new ApiError(404, `material ${materialId} does not exist`);
-	if (materialDb.quantity < materialRequested.quantity)     throw new ApiError(400, `quantity of ${materialId} not sufficient`);
+    let tire = await Tire.findById(materialId);
+	if (tire == null) 										 throw new ApiError(404, "material not found");
 
-	// TODO update quantity
+	let materialDb = await Tire.findOneAndUpdate(
+		{ _id : materialId, quantity : { $gte: materialRequested.quantity } },
+		{ $inc : {'quantity': -(materialRequested.quantity) } }
+		);
+	if (materialDb == null)                                   throw new ApiError(404, `material ${materialId} insufficient`);
 
 	return {
 			"materialId" : materialId,
@@ -295,6 +298,7 @@ router.put('/:id', async (req, res) => {
 		PartialApp.userId = await checkUser(req.body.userId);
 	}
 	if (!!req.body.materials) {
+		await app.materials.map(restoreMaterial);
 		PartialApp.materials = await checkMaterials(req.body.materials);  
 	}
 	if (!!req.body.date) {
@@ -343,9 +347,23 @@ router.put('/:id', async (req, res) => {
  */
 
 router.delete('/:id', async (req, res) => {
-    await Appointment.findByIdAndRemove(req.params.id);
+    const appRemoved = await Appointment.findByIdAndRemove(req.params.id);
+	
+	// restore the materials
+	if (appRemoved.materials != null) {
+		await appRemoved.materials.map(restoreMaterial);
+	}
 
     return res.status(200).json({});
 });
 	   
+
+async function restoreMaterial (material) {
+	await Tire.findOneAndUpdate(
+		{ _id : extractValue(material.materialId) },
+		{ $inc : { 'quantity': material.quantity } }
+		);
+}
+
+
 module.exports = router

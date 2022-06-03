@@ -238,6 +238,7 @@ router.put('/:id',async (req,res) =>{
 
 router.post('', async (req, res) => {
 
+    console.log(req.body);
     const isError = new Boolean(req.body.brand == '' || req.body.model == '' || req.body.length == '' || req.body.height == '' ||
                                 req.body.diameter == '' || req.body.quantity == '' || req.body.type == '' || req.body.price == '');
 
