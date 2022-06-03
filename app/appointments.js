@@ -152,7 +152,7 @@ function extractValue (linkValue) {
 
 // TODO check mongoose valid id
 
-async function checkMaterial (materialRequested) {
+async function checkMaterial (materialRequested, func) {
 	if(materialRequested.materialId == null)                 throw new ApiError(400, 'missing material id');
 
 	let materialId = extractValue(materialRequested.materialId);
@@ -163,6 +163,7 @@ async function checkMaterial (materialRequested) {
     let tire = await Tire.findById(materialId);
 	if (tire == null) 										 throw new ApiError(404, "material not found");
 
+	if (func) await func;
 	let materialDb = await Tire.findOneAndUpdate(
 		{ _id : materialId, quantity : { $gte: materialRequested.quantity } },
 		{ $inc : {'quantity': -(materialRequested.quantity) } }
@@ -175,11 +176,11 @@ async function checkMaterial (materialRequested) {
 	}
 }
 
-async function checkMaterials (materials) {
+async function checkMaterials (materials, func) {
 	if (materials == null)         throw new ApiError(400, 'materials not specified');
 	if (!Array.isArray(materials)) throw new ApiError(400, 'materials is not a list');
 
-	if (materials.length)          return await Promise.all(materials.map(checkMaterial));
+	if (materials.length)          return await Promise.all(materials.map(material => checkMaterial(material, func)));
 	else                           return [];
 }
 
@@ -298,8 +299,7 @@ router.put('/:id', async (req, res) => {
 		PartialApp.userId = await checkUser(req.body.userId);
 	}
 	if (!!req.body.materials) {
-		await app.materials.map(restoreMaterial);
-		PartialApp.materials = await checkMaterials(req.body.materials);  
+		PartialApp.materials = await checkMaterials(req.body.materials, app.materials.map(restoreMaterial));  
 	}
 	if (!!req.body.date) {
 		PartialApp.date = await checkDate(req.body.date);  
