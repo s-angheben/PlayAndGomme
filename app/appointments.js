@@ -5,7 +5,7 @@ const router = express.Router();
 const Appointment = require('./models/appointment');
 const Tire = require('./models/tire');
 const User = require('./models/user');
-const ApiError = require('./utils/apiError')
+const ApiError = require('./utils/apiError');
 
 function appointmentToLink(app) {
     return {
@@ -152,7 +152,7 @@ function extractValue (linkValue) {
 
 // TODO check mongoose valid id
 
-async function checkMaterial (materialRequested, func) {
+async function checkMaterial (materialRequested) {
 	if(materialRequested.materialId == null)                 throw new ApiError(400, 'missing material id');
 
 	let materialId = extractValue(materialRequested.materialId);
@@ -163,7 +163,6 @@ async function checkMaterial (materialRequested, func) {
     let tire = await Tire.findById(materialId);
 	if (tire == null) 										 throw new ApiError(404, "material not found");
 
-	if (func) await func;
 	let materialDb = await Tire.findOneAndUpdate(
 		{ _id : materialId, quantity : { $gte: materialRequested.quantity } },
 		{ $inc : {'quantity': -(materialRequested.quantity) } }
@@ -176,11 +175,11 @@ async function checkMaterial (materialRequested, func) {
 	}
 }
 
-async function checkMaterials (materials, func) {
+async function checkMaterials (materials) {
 	if (materials == null)         throw new ApiError(400, 'materials not specified');
 	if (!Array.isArray(materials)) throw new ApiError(400, 'materials is not a list');
 
-	if (materials.length)          return await Promise.all(materials.map(material => checkMaterial(material, func)));
+	if (materials.length)          return await Promise.all(materials.map(checkMaterial));
 	else                           return [];
 }
 
@@ -299,7 +298,8 @@ router.put('/:id', async (req, res) => {
 		PartialApp.userId = await checkUser(req.body.userId);
 	}
 	if (!!req.body.materials) {
-		PartialApp.materials = await checkMaterials(req.body.materials, app.materials.map(restoreMaterial));  
+		await app.materials.map(restoreMaterial)
+		PartialApp.materials = await checkMaterials(req.body.materials);  
 	}
 	if (!!req.body.date) {
 		PartialApp.date = await checkDate(req.body.date);  
