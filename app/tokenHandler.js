@@ -2,27 +2,24 @@ const express = require('express');
 const router = express.Router();
 const User = require('./models/user');
 const jwt = require('jsonwebtoken');
-
+const ApiError = require('./utils/apiError');
 
 router.post('',async (req,res) =>{
-    if (req.body.username == '') {
-        return res.status(400).json({ error: 'Authentication failed. Missing username field' });
-    }
-    if (req.body.password == '') {
-        return res.status(400).json({ error: 'Authentication failed. Missing password field' });
-    }
+    if (req.body == null)                          throw new ApiError(400, "The request is empty");
+    if (req.body.username == null)                 throw new ApiError(400, "Authentication failed. Missing username field");
+    if (req.body.password == null)                 throw new ApiError(400, 'Authentication failed. Missing password field');
+
     let userExist = await User.findOne({username : req.body.username});
 
-    if (userExist == null) {
-        return res.status(404).json({ error: 'Authentication failed. Incorrect username.' });
-    }
-    if(userExist.password != req.body.password){
-        return res.status(400).json({ error: 'Authentication failed. Incorrect password.' });
-    }
+    if (userExist == null)                          throw new ApiError(404, 'Authentication failed. Incorrect username.');
+    if(userExist.password != req.body.password)     throw new ApiError(400, 'Authentication failed. Incorrect password.');
 
+    let adminPermission = false;
+    if (userExist.admin) adminPermission = true;
     var payload = {
-		email: userExist.email,
-        id: userExist.self
+		username: userExist.username,
+        id: userExist.id,
+        admin: adminPermission
 	}
 	var options = {
 		expiresIn: 86400 // expires in 24 hours

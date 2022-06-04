@@ -9,7 +9,7 @@ const ApiError = require('./utils/apiError')
 const tokenHandler = require('./tokenHandler.js');
 const authenticate = require('./authenticate.js');
 
-app.use(cors())
+app.use(cors());
 
 const swaggerOptions = {
     definition: {

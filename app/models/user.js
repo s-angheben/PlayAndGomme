@@ -2,6 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 const userSchema = new Schema({
+    admin : {
+        type: Boolean,  // possible to give admin permission only by hand
+    },
     name : {
         type: String,
     },
