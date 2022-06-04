@@ -3,9 +3,11 @@ const app = express();
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const cors = require('cors');
+var mongoose = require('mongoose');
 
 const ApiError = require('./utils/apiError')
-var mongoose = require('mongoose');
+const tokenHandler = require('./tokenHandler.js');
+const authenticate = require('./authenticate.js');
 
 app.use(cors())
 
@@ -34,8 +36,12 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/', express.static(process.env.FRONTEND || 'static'));
 
-// API
 
+//Middleware
+app.use('/api/v2/login', tokenHandler);
+app.use('/api/v2/appointments',authenticate);
+
+// API
 app.use('/api/v2/appointments', appointments);
 app.use('/api/v2/tires', tires);
 app.use('/api/v2/users', users);
