@@ -68,7 +68,8 @@ const tireSchema = new Schema({
     },
     quantity: {
         type: Number,
-        required: true
+        required: true,
+        min: 0
     },
     type: {
         type: String,
@@ -77,7 +78,8 @@ const tireSchema = new Schema({
     },
     price: {
         type: Number,
-        required: true
+        required: true,
+        min: 0
     }
 }, {timestamps: true});
 
