@@ -3,9 +3,7 @@ const app = require('./app');
 
 describe('GET /api/v2/appointments', () => {
 
-    // Moking Book.find method
     let appointmentSpy;
-    // Moking Book.findById method
     let appointmentSpyFindById;
   
     beforeAll( () => {
@@ -13,7 +11,7 @@ describe('GET /api/v2/appointments', () => {
 
       appointmentSpy = jest.spyOn(Appointment, 'find').mockImplementation((criterias) => {
         return [{
-            id: "123456789abc",
+            id: "629b18ca308b2597242e3ee4",
             appointmentPlaced: "2022-06-18",
             service : "riparazione",
             userId : "userid3",
@@ -24,9 +22,9 @@ describe('GET /api/v2/appointments', () => {
       });
 
       appointmentSpyFindById = jest.spyOn(Appointment, 'findById').mockImplementation((id) => {
-        if (id=="123456789abc"){
+        if (id=="629b18ca308b2597242e3ee4"){
           return {
-            id: "123456789abc",
+            id: "629b18ca308b2597242e3ee4",
             appointmentPlaced: "2022-06-18",
             service : "riparazione",
             userId : "userid3",
@@ -34,7 +32,7 @@ describe('GET /api/v2/appointments', () => {
             date : "2022-07-08",
             alreadyPaid : false
           };
-        } else {return {};}
+        } else {return null;}
       });
 
     });
@@ -52,7 +50,7 @@ describe('GET /api/v2/appointments', () => {
         .then( (res) => {
           if(res.body && res.body[0]) {
             expect(res.body[0]).toEqual({
-                self: "/api/v2/appointments/123456789abc",
+                self: "/api/v2/appointments/629b18ca308b2597242e3ee4",
                 appointmentPlaced: "2022-06-18",
                 service : "riparazione",
                 userId : "/api/v2/users/userid3",
@@ -65,12 +63,12 @@ describe('GET /api/v2/appointments', () => {
     });
 
 
-    test('GET /api/v1/appointments/:id with correct id', async () => {
+    test('GET /api/v2/appointments/:id with correct id', async () => {
         return request(app)
-          .get('/api/v2/appointments/123456789abc')
+          .get('/api/v2/appointments/629b18ca308b2597242e3ee4')
           .expect('Content-Type', /json/)
           .expect(200, {
-                self: "/api/v2/appointments/123456789abc",
+                self: "/api/v2/appointments/629b18ca308b2597242e3ee4",
                 appointmentPlaced: "2022-06-18",
                 service : "riparazione",
                 userId : "/api/v2/users/userid3",
@@ -80,12 +78,11 @@ describe('GET /api/v2/appointments', () => {
             });
       });
 
-      test('GET /api/v1/appointments/:id with incorrect id', async () => {
+      test('GET /api/v2/appointments/:id with incorrect id', async () => {
         return request(app)
-          .get('/api/v2/appointments/123456789aaa')
+          .get('/api/v2/appointments/629b18ca308b2597242e3ee5')
           .expect('Content-Type', /json/)
           .expect(404, {error: "Appointment not found"});
       });
-
 
   });

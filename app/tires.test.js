@@ -35,7 +35,7 @@ describe('GET /api/v2/tires', () => {
             price: '199.99'
         };
       else
-        return {};
+        return null;
     });
   });
 
