@@ -1,0 +1,1 @@
+import{_ as c,o,c as a,a as e}from"./index.a83641c7.js";const t={},s={class:"about"},r=e("h1",null,[e("a",{href:"/api-doc"},[e("u",null,"Clicca qui per aprire la documentazione delle API")])],-1),n=[r];function _(i,l){return o(),a("div",s,n)}var u=c(t,[["render",_]]);export{u as default};
