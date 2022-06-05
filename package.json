@@ -4,7 +4,8 @@
   "description": "web-application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "test": "jest",
     "devStart": "nodemon server.js"
   },
   "repository": {
@@ -18,13 +19,19 @@
   },
   "homepage": "https://github.com/s-angheben/PlayAndGomme#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
-    "express": "^4.18.1",
+    "express": "^5.0.0-beta.1",
+    "jsonwebtoken": "^8.5.1",
     "googleapis": "^100.0.0",
     "mongoose": "^6.3.5",
     "mongose": "^0.0.2-security",
     "nodemon": "^2.0.16",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0"
+  },
+  "devDependencies": {
+    "jest": "^28.1.0",
+    "supertest": "^6.2.3"
   }
 }

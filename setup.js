@@ -1,6 +1,7 @@
 require('dotenv').config()
 var mongoose = require('mongoose');
 var Appointment = require('./app/models/appointment');
+var User = require('./app/models/user');
 var Tire = require('./app/models/tire');
 
 mongoose.connect(process.env.DB_URL)
@@ -86,4 +87,32 @@ Tire.remove().then( () => {
     return tire4.save();
 }).then( () => {
     console.log('tires added');
+});
+
+User.remove().then( () => {
+    const admin = new User({
+        admin: true,           // possible to give admin permission only by hand
+        username: "admin",
+        password: "admin"
+    });
+
+    const user1 = new User({
+        username: "user1",
+        password: "pass1"
+    });
+
+    const user2 = new User({
+        name: "John",
+        surname: "Jee",
+        phone: 15646,
+        email: "john@io.com",
+        username: "user2",
+        password: "pass2"
+    });
+
+    admin.save();
+    user1.save();
+    return user2.save();
+}).then( () => {
+    console.log('users added');
 });
