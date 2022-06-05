@@ -17,7 +17,7 @@ const swaggerOptions = {
         info: {
         title: 'PlayAndGomme API',
         version: '1.0.0',
-        description: 'API for managigng a tire shop'
+        description: 'API for managing a tire shop'
         },
     },
     apis: ['./app/tires.js','./app/models/tire.js', './app/appointments.js', './app/models/appointment.js', './app/users.js', './app/models/user.js'],

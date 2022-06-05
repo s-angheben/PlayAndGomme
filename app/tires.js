@@ -144,7 +144,7 @@ router.delete('/:id', async (req, res) => {
  *            name: id
  *            required: true
  *            type: string
- *            description: The ID of the tires to delete.
+ *            description: The ID of the Tire to modify.
  *            example: 6287f53594cf2c342a3a9d81
  *      requestBody:
  *          required: false
