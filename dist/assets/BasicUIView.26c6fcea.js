@@ -1,0 +1,1 @@
+import{_ as a,o as c,c as o,a as e}from"./index.a18e588f.js";const s={},t={class:"about"},n=e("h1",null,[e("a",{href:"/home.html"},[e("u",null,"Clicca qui per aprire l'interfaccia base del sito (non in VUE)")])],-1),r=[n];function i(_,l){return c(),o("div",t,r)}var f=a(s,[["render",i]]);export{f as default};
