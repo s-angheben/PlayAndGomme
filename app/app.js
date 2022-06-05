@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/', express.static(process.env.FRONTEND || 'static'));
-
+app.use('/', express.static('static')); 
 
 //Middleware
 app.use('/api/v2/login', tokenHandler);
@@ -46,7 +46,7 @@ app.use('/api/v2/appointments',authenticate);
 app.use('/api/v2/appointments', appointments);
 app.use('/api/v2/tires', tires);
 app.use('/api/v2/users', users);
-app.use('/api/v2/data', datae);
+app.use('/api/v2/data', datae.router);
 
 app.use((req,res) => {
     res.status(404);

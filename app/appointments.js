@@ -7,6 +7,8 @@ const Tire = require('./models/tire');
 const User = require('./models/user');
 const ApiError = require('./utils/apiError');
 
+const datae = require('./data.js');
+
 function appointmentToLink(app) {
     return {
 		self: '/api/v2/appointments/' + app.id,
@@ -183,10 +185,28 @@ async function checkMaterials (materials) {
 	else                           return [];
 }
 
-async function checkDate (date) {
+async function checkDate (date, service, username) {
 	if (date == null)              throw new ApiError(400, 'date not specified');
-   //TODO check date
-	return date;
+   //add date to calendar
+	let startDate = new Date(date);
+    let endDate = new Date(startDate);
+    endDate.setMinutes(startDate.getMinutes() + (15*1));
+
+    let event = {
+             'summary': `${username}: ${service}`,
+             'description': `Appuntamento prenotato tramite sito web`,
+             'start': {
+                 'dateTime': startDate,
+                 'timeZone': 'Europe/Rome'
+             },
+             'end': {
+                 'dateTime': endDate,
+                 'timeZone': 'Europe/Rome'
+             }
+    };
+	datae.insertEvent(event);
+
+	return startDate;
 }
 
 function checkService (service) {
@@ -196,14 +216,21 @@ function checkService (service) {
 	return service;
 }
 
-async function checkUser(user) {
-	if (user == null)                           throw new ApiError(400, 'user not specified');
-	let userId = extractValue (user)
-    let userDb = await User.findById(userId);
-	if (userDb == null)                         throw new ApiError(404, 'user does not exist');
-
-	return userId
-	// TODO check i'm the user
+// if I am the admin I can choose the user, otherwise I can book appointments only for myself.
+async function checkUser(loggedUser, user) {
+	let userApp = "";
+	if (loggedUser.admin) {
+		if (user != null) {
+			userApp = extractValue (user)
+			let userDb = await User.findById(userApp);
+			if (userDb == null)                         throw new ApiError(404, 'user does not exist');
+		}
+	}
+	if (userApp == "") {
+		userApp = loggedUser.id
+	}
+	
+	return userApp
 }
 
 function checkAlreadyPaid(alreadyPaid) {
@@ -218,9 +245,9 @@ async function extractAppointmentData(req) {
 
 	let alreadyPaid = checkAlreadyPaid(req.body.alreadyPaid);
 	let service = checkService(req.body.service);
-	let userId = await checkUser(req.body.userId);
+	let userId = await checkUser(req.loggedUser, req.body.userId);
 	let materials = await checkMaterials(req.body.materials);  
-	let date = await checkDate(req.body.date);
+	let date = await checkDate(req.body.date, service, req.loggedUser.username);
 
 	return new Appointment ({
 			appointmentPlaced: Date(),
@@ -295,7 +322,7 @@ router.put('/:id', async (req, res) => {
 		PartialApp['service'] = checkService(req.body.service);
 	}
 	if (!!req.body.userId) {
-		PartialApp.userId = await checkUser(req.body.userId);
+		PartialApp.userId = await checkUser(req.loggedUser, req.body.userId);
 	}
 	if (!!req.body.materials) {
 		await app.materials.map(restoreMaterial)
