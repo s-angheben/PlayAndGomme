@@ -7,6 +7,8 @@ const Tire = require('./models/tire');
 const User = require('./models/user');
 const ApiError = require('./utils/apiError');
 
+const datae = require('./data.js');
+
 function appointmentToLink(app) {
     return {
 		self: '/api/v2/appointments/' + app.id,
@@ -183,10 +185,28 @@ async function checkMaterials (materials) {
 	else                           return [];
 }
 
-async function checkDate (date) {
+async function checkDate (date, service, username) {
 	if (date == null)              throw new ApiError(400, 'date not specified');
-   //TODO check date
-	return date;
+   //add date to calendar
+	let startDate = new Date(date);
+    let endDate = new Date(startDate);
+    endDate.setMinutes(startDate.getMinutes() + (15*1));
+
+    let event = {
+             'summary': `${username}: ${service}`,
+             'description': `Appuntamento prenotato tramite sito web`,
+             'start': {
+                 'dateTime': startDate,
+                 'timeZone': 'Europe/Rome'
+             },
+             'end': {
+                 'dateTime': endDate,
+                 'timeZone': 'Europe/Rome'
+             }
+    };
+	datae.insertEvent(event);
+
+	return startDate;
 }
 
 function checkService (service) {
@@ -220,7 +240,7 @@ async function extractAppointmentData(req) {
 	let service = checkService(req.body.service);
 	let userId = await checkUser(req.body.userId);
 	let materials = await checkMaterials(req.body.materials);  
-	let date = await checkDate(req.body.date);
+	let date = await checkDate(req.body.date, service, req.loggedUser.username);
 
 	return new Appointment ({
 			appointmentPlaced: Date(),
