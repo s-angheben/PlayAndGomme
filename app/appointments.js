@@ -348,7 +348,7 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     const appRemoved = await Appointment.findByIdAndRemove(req.params.id);
-	
+	if(appRemoved == null) throw new ApiError(404, "Appointment not found");
 	// restore the materials
 	if (appRemoved.materials != null) {
 		await appRemoved.materials.map(restoreMaterial);
