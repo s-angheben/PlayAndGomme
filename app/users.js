@@ -29,6 +29,31 @@ function isNumeric(num){
     return !isNaN(num)
 }
 
+/**
+ * @openapi
+ * 
+ *  /api/v2/users:
+ *      get:
+ *          description: Gets the list of all Users
+ *          summary: View all the Users
+ *          responses:
+ *              200:
+ *                  description: 'Collection of users'
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: array
+ *                              items:
+ *                                  $ref: '#/components/schemas/User'
+ *              404:
+ *                  description: Not found
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: string
+ *                              example: Not found
+ */
+
 router.get('/',async(req, res) =>{
     let allUsers = await User.find();
     if(allUsers == null) res.status(404).json({ error: 'Not found'});

@@ -20,7 +20,7 @@ const swaggerOptions = {
         description: 'API for managigng a tire shop'
         },
     },
-    apis: ['./app/tires.js','./app/models/tire.js', './app/appointments.js', './app/models/appointment.js'],
+    apis: ['./app/tires.js','./app/models/tire.js', './app/appointments.js', './app/models/appointment.js', './app/users.js', './app/models/user.js'],
 };
 
 const swaggerDocument = swaggerJsDoc(swaggerOptions);
