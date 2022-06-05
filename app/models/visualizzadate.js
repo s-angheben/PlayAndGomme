@@ -101,4 +101,4 @@ class visualizzaDate{
     }
 }
 
-module.exports = visualizzaDate 
+module.exports = visualizzaDate;
