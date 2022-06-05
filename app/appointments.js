@@ -216,14 +216,21 @@ function checkService (service) {
 	return service;
 }
 
-async function checkUser(user) {
-	if (user == null)                           throw new ApiError(400, 'user not specified');
-	let userId = extractValue (user)
-    let userDb = await User.findById(userId);
-	if (userDb == null)                         throw new ApiError(404, 'user does not exist');
-
-	return userId
-	// TODO check i'm the user
+// if I am the admin I can choose the user, otherwise I can book appointments only for myself.
+async function checkUser(loggedUser, user) {
+	let userApp = "";
+	if (loggedUser.admin) {
+		if (user != null) {
+			userApp = extractValue (user)
+			let userDb = await User.findById(userApp);
+			if (userDb == null)                         throw new ApiError(404, 'user does not exist');
+		}
+	}
+	if (userApp == "") {
+		userApp = loggedUser.id
+	}
+	
+	return userApp
 }
 
 function checkAlreadyPaid(alreadyPaid) {
@@ -238,7 +245,7 @@ async function extractAppointmentData(req) {
 
 	let alreadyPaid = checkAlreadyPaid(req.body.alreadyPaid);
 	let service = checkService(req.body.service);
-	let userId = await checkUser(req.body.userId);
+	let userId = await checkUser(req.loggedUser, req.body.userId);
 	let materials = await checkMaterials(req.body.materials);  
 	let date = await checkDate(req.body.date, service, req.loggedUser.username);
 
@@ -315,7 +322,7 @@ router.put('/:id', async (req, res) => {
 		PartialApp['service'] = checkService(req.body.service);
 	}
 	if (!!req.body.userId) {
-		PartialApp.userId = await checkUser(req.body.userId);
+		PartialApp.userId = await checkUser(req.loggedUser, req.body.userId);
 	}
 	if (!!req.body.materials) {
 		await app.materials.map(restoreMaterial)

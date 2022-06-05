@@ -20,7 +20,6 @@ const authenticate = function(req, res, next) {
 		} else {
 			console.log('Token ok');
 			req.loggedUser = decoded;
-			console.log(decoded);
 			next();
 		}
     });
