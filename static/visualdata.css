@@ -1,0 +1,85 @@
+.tit {
+    color: white;
+    font-weight: bold;
+    margin-left: 2.5%;
+}
+
+.sottotit {
+    color: white;
+    font-weight: bold;
+    margin-left: 2.5%;
+}
+
+.contgiorno {
+    width: 100%;
+    text-align: center;
+}
+
+.selgiorno {
+    color: white;
+    background-color: brown;
+    font-size: 200%;
+    font-weight: bold;
+    text-align: center;
+    width: 70%;
+}
+
+.slot {
+    color: white;
+    background-color: brown;
+    /*font: bold 50px Arial;*/
+    font-size: 200%;
+    font-weight: bold;
+    height: 70%;
+    width: 70%;
+}
+
+.indietro {
+    color: white;
+    background-color: brown;
+    font-size: 200%;
+    font-weight: bold;
+    height: 7%;
+    width: 12%;
+    float: left;
+    border-radius: 50%;
+}
+
+.avanti {
+    color: white;
+    background-color: brown;
+    font-size: 200%;
+    font-weight: bold;
+    height: 7%;
+    width: 12%;
+    float: right;
+    border-radius: 50%;
+}
+
+body {
+    background-color: black;
+    /*background-repeat:  ;
+    background-repeat: no-repeat;*/
+    background-position: center;
+}
+
+.tablee {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.tabella {
+    text-align: center;
+    width: 100%;
+    height: 70%;
+}
+
+.festivo {
+    color: white;
+    font-size: 400%;
+    position: absolute;
+    top: 36%;
+    left: 42%;
+
+}

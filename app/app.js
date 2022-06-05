@@ -30,6 +30,7 @@ app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const appointments = require('./appointments.js');
 const tires = require('./tires.js');
 const users = require('./users.js');
+const datae = require('./data.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -45,6 +46,7 @@ app.use('/api/v2/appointments',authenticate);
 app.use('/api/v2/appointments', appointments);
 app.use('/api/v2/tires', tires);
 app.use('/api/v2/users', users);
+app.use('/api/v2/data', datae);
 
 app.use((req,res) => {
     res.status(404);
