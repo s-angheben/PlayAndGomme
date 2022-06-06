@@ -98,9 +98,17 @@ router.get('/',async(req, res) =>{
         }); 
 });
 
+function soloNumeri(str){
+    return /^[0-9]+$/.test(str);
+}
+
 router.post('', async (req, res) => {
     var data3;
-    var skip = false;
+    console.log(req.body.durataSlot);
+    if(!soloNumeri((req.body.durataSlot))){
+        res.status(400).json({status: 400, successo: 'caricamento fallito: la durata dell appuntamento deve essere un numero!'});
+        return;
+    }
     if(data3 = new Date(req.body.slot)){
         console.log('data creata con successo');
     }else{
