@@ -37,6 +37,15 @@ function soloNumeri(str){
     return /^[0-9]+$/.test(str);
 }
 
+function ValidURL(str) { 
+    var regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/; 
+    if(!regex .test(str)) {
+        return false; 
+    } else { 
+        return true; 
+    }
+} 
+
 router.post('', async (req, res) => {
     console.log(req.body);
     let aziendaDati = await infoAzienda.find();
@@ -61,14 +70,13 @@ router.post('', async (req, res) => {
     }else if(req.body.oggetto == 'email'){
         dati.email = req.body.text;
     }else if(req.body.oggetto == 'news'){
-        //
-        if(req.body.array.length > 0){ //elementi da eliminare
+        if(req.body.array.length > 0){
             for (var i=(req.body.array.length - 1); i>=0; i--){
                 var ii = 0;
                 while (dati.news[ii]._id.toString() != req.body.array[i]){
                     ii++;
                     if(ii > dati.news.length){
-                        res.status(400).json({status: 400, successo: 'News da eliminare non trovata riprovare'});
+                        res.status(404).json({status: 404, successo: 'News da eliminare non trovata riprovare'});
                         return;
                     }
                 }
@@ -82,17 +90,33 @@ router.post('', async (req, res) => {
                 Testo: req.body.text
             });
         }
-        //
     }else if(req.body.oggetto == 'youtube'){
-        dati.youtube = req.body.text;
+        if(ValidURL(req.body.text)||(req.body.text == 'null')){
+            dati.youtube = req.body.text;
+        } else{
+            res.status(400).json({status: 400, successo: 'URL inserito non valido'})
+            return;
+        }
     }else if(req.body.oggetto == 'facebook'){
-        dati.facebook = req.body.text;
+        if(ValidURL(req.body.text)||(req.body.text == 'null')){
+            dati.facebook = req.body.text;
+        } else{
+            res.status(400).json({status: 400, successo: 'URL inserito non valido'})
+            return;
+        }
     }else if(req.body.oggetto == 'instagram'){
-        dati.instagram = req.body.text;
+        if(ValidURL(req.body.text)||(req.body.text == 'null')){
+            dati.instagram = req.body.text;
+        } else{
+            res.status(400).json({status: 400, successo: 'URL inserito non valido'})
+            return;
+        }
+    }else{
+        res.status(400).json({status: 400, successo: 'Operazione selezionata non valida!'})
+        return;
     }
     dati = await dati.save();
     res.status(201).json({status: 201, successo: 'caricamento avvenuto con successo!'});
-    //res.status(400).json({status: 400, successo: 'caricamento fallito'});
 });
 
 

@@ -99,32 +99,48 @@ router.get('/',async(req, res) =>{
 });
 
 router.post('', async (req, res) => {
-    var data3 = new Date(req.body.slot);
+    var data3;
+    var skip = false;
+    if(data3 = new Date(req.body.slot)){
+        console.log('data creata con successo');
+    }else{
+        console.log('errore nella creazione della data');
+        res.status(400).json({status: 400, successo: 'caricamento fallito: data inviata errata'});
+        return;
+    }
     var data4 = new Date(data3);
     data4.setMinutes(data3.getMinutes() + (15*req.body.durataSlot));
-    console.log(data3);
-    console.log(data4);
-    let event = {
-             'summary': `Appuntamento Gommista`,
-             'description': `Appuntamento prenotato tramite sito web`,
-             'start': {
-                 'dateTime': data3,
-                 'timeZone': 'Europe/Rome'
-             },
-             'end': {
-                 'dateTime': data4,
-                 'timeZone': 'Europe/Rome'
-             }
-    };
-    insertEvent(event)
-        .then((ris) => {
-            console.log(ris);
-            res.status(201).json({status: 201, successo: 'caricamento avvenuto con successo!'});
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(400).json({status: 400, successo: 'caricamento fallito: ' + err});
-    });
+    console.log(data3 + ' ');
+    console.log(data4 + ' ');
+    getEvents(data3, data4)
+        .then((risp) => {
+            console.log(risp);
+            if(risp.length > 0){
+                res.status(400).json({status: 400, successo: 'caricamento fallito: Data selezionata gia occupata!'});
+                return;
+            }
+            let event = {
+                'summary': `Appuntamento Gommista`,
+                'description': `Appuntamento prenotato tramite sito web`,
+                'start': {
+                    'dateTime': data3,
+                    'timeZone': 'Europe/Rome'
+                },
+                'end': {
+                    'dateTime': data4,
+                    'timeZone': 'Europe/Rome'
+                }
+            };
+            insertEvent(event)
+                .then((ris) => {
+                    console.log(ris);
+                    res.status(201).json({status: 201, successo: 'caricamento avvenuto con successo!'});
+                })
+                .catch((err) => {
+                    console.log(err);
+                    res.status(400).json({status: 400, successo: 'caricamento fallito: ' + err});
+                });
+        });
 });
 
 

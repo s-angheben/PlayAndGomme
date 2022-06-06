@@ -174,12 +174,10 @@ function slv(){
     .then((res) => {
         console.log(res);
         if (res.status == 201){
-            //corretto vai avanti
             console.log(res.successo);
             alert("Operazione avvenuta con successo!");
             back();
-        }else if (res.status == 400){
-            //errore
+        }else if ((res.status == 400)||(res.status == 404)){
             console.log(res.successo);
             alert(res.successo);
             barra();

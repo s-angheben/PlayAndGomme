@@ -128,7 +128,7 @@ function continua(){
             }else if (res.status == 400){
                 //errore
                 console.log(res.successo);
-                alert("Errore nella selezione dello slot ricaricare la pagina e riprovare");
+                alert(res.successo);
             }
             return;
         })

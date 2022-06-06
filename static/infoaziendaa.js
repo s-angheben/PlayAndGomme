@@ -41,8 +41,6 @@ function datiAzienda(){
                 }
             }
             for (var i=0; i<data.news.length; i++){
-                //data.news [i].Titolo
-                //data.news [i].Testo
                 news.innerHTML += "<div class='riquadri'><h3>"+data.news[i].Titolo+"</h3><h5>"+data.news[i].Testo+"</h5></div>";
             }
 
