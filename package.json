@@ -12,6 +12,10 @@
     "test": "jest",
     "devStart": "nodemon server.js"
   },
+  "jest": {
+    "verbose": true,
+    "collectCoverage": true
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/s-angheben/PlayAndGomme.git"
