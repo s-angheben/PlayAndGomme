@@ -31,6 +31,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - run: echo ${{ secrets.CREDENTIALS }}
       - run: npm install
       - run: npm run build --if-present
       - run: npm test
