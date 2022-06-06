@@ -11,6 +11,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+        DB_URL: ${{ secrets.DB_URL }}
+        FRONTEND: 'dist'
+        ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+        CREDENTIALS: ${{ secrets.CREDENTIALS }}
+        CALENDAR_ID: ${{ secrets.CALENDAR_ID }}
+
+
     strategy:
       matrix:
         node-version: [15.x]
