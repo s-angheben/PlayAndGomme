@@ -107,7 +107,7 @@ describe('GET /api/v2/appointments', () => {
 
   });
 
-describe('POST and PUT and DELETE/api/v2/appointments', () => {
+describe('POST, PUT and DELETE /api/v2/appointments', () => {
 
   let connection;
 
