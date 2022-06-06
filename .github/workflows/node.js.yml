@@ -11,6 +11,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    environment: production
+
     env:
         DB_URL: ${{ secrets.DB_URL }}
         FRONTEND: 'dist'
