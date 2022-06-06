@@ -23,7 +23,6 @@ describe('GET /api/v2/appointments', () => {
     let appointmentSpyFindById;
 
     beforeAll( () => {
-      const Appointment = require('./models/appointment');
 
       appointmentSpy = jest.spyOn(Appointment, 'find').mockImplementation((criterias) => {
         return [{

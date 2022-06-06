@@ -9,7 +9,6 @@ describe('GET /api/v2/users', () => {
   let tireSpyFindById;
 
   beforeAll( () => {
-    const User = require('./models/user');
     tireSpy = jest.spyOn(User, 'find').mockImplementation((criterias) => {
       return [
         {
