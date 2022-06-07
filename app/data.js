@@ -59,6 +59,46 @@ const insertEvent = async (event) => {
     }
 };
 
+
+
+//GET
+
+/**
+ * @openapi
+ * 
+ *  /api/v2/data:
+ *      get:
+            description: >-
+                Get a json with the data regarding the dates and available time slots.
+        summary: Take data regarding time slots
+        responses:
+            '200':
+                description: 'API that, through the Google chalendars APIs, gives back a json file made of one array of the above elements. The array is made of datas that represen the ten days after the day in which the request was made.'
+                content:
+                application/json:
+                schema:
+                    type: array
+                    items:
+ *                      visualizzaDate:
+                            type: object
+                            required:
+                                - gSettimana
+                                - giorno
+                                - slotOrari[36]
+                            properties:
+                                gSettimana:
+                                    type: string
+                                    description: 'Day of the week'
+                                giorno:
+                                    type: string
+                                    description: 'Date in the format: dd/mm/yyyy'
+                                slotOrari[36]:
+                                    type: boolean
+                                    description: 'Array that reports occupied slots with "true"'
+ * 
+ */
+
+
 router.get('/',async(req, res) =>{
     var array = [new Date()];
     var dateInvio = [new visualizzaDate(array[0].getDay(), array[0].getDate(), array[0].getMonth(), array[0].getFullYear())];
@@ -102,20 +142,96 @@ function soloNumeri(str){
     return /^[0-9]+$/.test(str);
 }
 
+const eunaData = (str) => {
+    return (new Date(str) !== "Invalid Date") && !isNaN(new Date(str));
+}
+
+
+
+//POST
+
+/**
+ *  @openapi
+ *  /api/v2/data:
+ *  post:
+ *      description: >-
+            Receives a json with the data regarding the time slot you want to fix appointment in and send a response.
+        summary: Allows to mark time slots as busy
+ *      requestBody:
+            description: 'API receives the complete date (day and time) and the duration of the appointment you want to book. It should be specified that the duration must be expressed as a number which is a multiplier of 15 minutes, which is the standard duration of a time slot.'
+            content:
+                application/json:
+                    schema:
+                        salvaDate:
+                            type: object
+                            required:
+                                - slot
+                                - durataSlot
+                            properties:
+                                slot:
+                                    type: string
+                                    description: 'Date in the standard javascript format "Date" with the time corresponding to the selected slot'
+                                durataSlot:
+                                    type: number
+                                    description: 'Number of slots to be occupied starting from the one indicated by "slot"'
+ *      responses:
+ *          '201':
+                description: 'If the operation is successful, the API saves the appointment on Google Calendar and returns a 201 message confirming the success.'
+            content:
+            application/json:
+                schema:
+                    type: array
+                    items:
+                        risposta:
+                            type: object
+                            required:
+                                - status
+                                - successo
+                            properties:
+                                status:
+                                    type: number
+                                    description: 'Response type number: 201 for success and 400 for error.'
+                                successo:
+                                    type: string
+                                    description: 'Message that tells whether the operation was successful or not and clarifies the possible causes of the failure.'
+
+ *          400:
+ *              description: 'If the operation fails, a message with status 400 is sent'
+                content:
+                application/json:
+                    schema:
+                        type: array
+                        items:
+                            risposta:
+                                type: object
+                                required:
+                                    - status
+                                    - successo
+                                properties:
+                                    status:
+                                        type: number
+                                        description: 'Response type number: 201 for success and 400 for error.'
+                                    successo:
+                                        type: string
+                                        description: 'Message that tells whether the operation was successful or not and clarifies the possible causes of the failure.'
+ */
+
+
 router.post('', async (req, res) => {
-    var data3;
     console.log(req.body.durataSlot);
     if(!soloNumeri((req.body.durataSlot))){
         res.status(400).json({status: 400, successo: 'caricamento fallito: la durata dell appuntamento deve essere un numero!'});
         return;
     }
-    if(data3 = new Date(req.body.slot)){
+    console.log(eunaData(req.body.slot));
+    if(eunaData(req.body.slot) == true){
         console.log('data creata con successo');
     }else{
         console.log('errore nella creazione della data');
         res.status(400).json({status: 400, successo: 'caricamento fallito: data inviata errata'});
         return;
     }
+    var data3 = new Date(req.body.slot)
     var data4 = new Date(data3);
     data4.setMinutes(data3.getMinutes() + (15*req.body.durataSlot));
     console.log(data3 + ' ');
@@ -150,7 +266,6 @@ router.post('', async (req, res) => {
                 });
         });
 });
-
 
 
 module.exports = {

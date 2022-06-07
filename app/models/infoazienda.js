@@ -56,5 +56,5 @@ const infoAziendaSchema = new Schema({
 });
 
 
-const infoazienda = mongoose.model('infoazienda', infoAziendaSchema);
-module.exports = infoazienda;
+const infoAzienda = mongoose.model('infoazienda', infoAziendaSchema);
+module.exports = infoAzienda;
