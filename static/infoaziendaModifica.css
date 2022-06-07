@@ -1,0 +1,178 @@
+body {
+    background-color: black;
+    background-position: center;
+    font-size: 150%;
+    font-weight: bold;
+    color:yellow;
+    text-align: center;
+}
+
+.title{
+    text-align: center;
+    height: 10%;
+    width: 100%;
+}
+
+.title1{
+    float: left;
+    text-align: center;
+    height: 100%;
+    width: 5%;
+}
+
+.title2{
+    float: left;
+    text-align: center;
+    height: 100%;
+    width: 90%;
+}
+
+.back{
+    height: 60%;
+    width: 60%;
+}
+
+.seleziona{
+    text-align: center;
+    height: 6%;
+    width: 100%;
+}
+
+.seleziona2{
+    color: white;
+    background-color: brown;
+    font-size: 200%;
+    font-weight: bold;
+    text-align: center;
+    width: 70%;
+}
+
+.elementi{
+    height: 74%;
+    width: 98%;
+    margin-left: 1%;
+}
+
+.salvabtn{
+    height: 8%;
+    width: 98%;
+    margin-left: 1%;
+    text-align: right;
+}
+
+.btns{
+    position: relative;
+    height: 100%;
+    width: 8%;
+    background-color: brown;
+    color: white;
+    font-size: 110%;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+.elementi1{
+    display: table;
+    height: 35%;
+    width: 100%;
+}
+
+.elementi2{
+    display: table;
+    height: 35%;
+    width: 100%;
+}
+
+.elementi3{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.elementi4{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.titt{
+    font-size: 200%;
+    font-weight: bold;
+}
+.tittt{
+    font-size: 150%;
+    font-weight: bold;
+}
+
+.text{
+    font-size: 150%;
+    font-weight: bold;
+    height: 15%;
+    width: 70%;
+}
+
+.newss{
+    float: left;
+    height: 100%;
+    width: 50%;
+    display: table;
+}
+
+.tabella{
+    display: table;
+    float: left;
+    height: 100%;
+    width: 50%;
+    overflow: auto;
+}
+
+.textt{
+    font-size: 150%;
+    font-weight: bold;
+    height: 6%;
+    width: 90%;
+}
+
+.tittt{
+    font-size: 160%;
+    font-weight: bold;
+    text-align: center;
+}
+
+.newsins{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+table{
+    width: 99%;
+    text-align: center;
+}
+
+.tb{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.colonne{
+    width: 33%;
+}
+
+.sottotit{
+    font-size: 170%;
+    font-weight: bold;
+    color: black;
+}
+
+.texnews{
+    font-size: 140%;
+    color: black;
+}
+
+.checkbox{
+    width: 30px;
+    height: 30px;
+}
+
+tr{
+    background-color: white;
+}

@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <title>info_azienda_modifica</title>
+        <link href="infoaziendaModifica.css" rel="stylesheet">
+    </head>
+    <body background="sfondo3.jpg">
+        <div class="title">
+            <div class="title1">
+                <input type="image" id="back" src="back.png" class="back" onclick="back()">
+            </div>
+            <div class="title2">
+                <h1>Modifica info azienda</h1>
+            </div>
+        </div>
+        <div class="seleziona">
+            <select class="seleziona2" id="sel" onmouseover="redsb()" onmouseleave="rednb()" onChange="barra()">
+                <option value="titolo">Titolo</option>
+                <option value="descrizione">Descrizione</option>
+                <option value="indirizzo">Indirizzo</option>
+                <option value="orari">Orari</option>
+                <option value="numerotelefono">Numero di telefono</option>
+                <option value="email">Email</option>
+                <option value="news">News</option>
+                <option value="youtube">Youtube link</option>
+                <option value="facebook">Facebook link</option>
+                <option value="instagram">Instagram link</option>
+            </select>
+        </div>
+        <div class="elementi" id="pag">
+            <div class="elementi1">
+                <div class="elementi3">
+                    <h2 class="titt">Vecchio contenuto:</h2>
+                    <p class="tittt" id="veccont">vecchio contenuto esempio ooo ooo ooo ooo</p>
+                </div>
+            </div>
+            <div class="elementi2">
+                <div class="elementi4">
+                    <h2 class="titt">Inserire nuovo contenuto:</h2>
+                    <input class="text" value="" id="da_inv"/>
+                    <p class="tittt" id="inserireelem">* inserire "null" se non si desidera il link</p>
+                </div>
+            </div>
+        </div>
+        <div class="elementi" id="pag2">
+            <div class="tabella" id="newshow">
+                <div class="tb" id="tabdiv">
+                    <h2 class='tittt'>Spuntare le News da cancellare:</h2>
+                    <table id="tab">
+                        <tr><td class='colonne'><p class='sottotit'>TITOLO:</p></td><td class='colonne'><p class='sottotit'>TESTO:</p></td><td class='colonne'><p class='sottotit'>CHECKBOX:</p></td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="newss">
+                <div class="newsins">
+                    <h2 class="tittt">Inserire TITOLO nuova News:</h2>
+                    <input class="textt" value="" id="newsTit"/>
+                    <h2 class="tittt">Inserire TESTO nuova News:</h2>
+                    <input class="textt" value="" id="newsText"/>
+                </div>
+            </div>
+        </div>
+        <div class="salvabtn">
+            <button class="btns" id="salva" onmouseover="reds()" onmouseleave="redn()" onclick="slv()">Salva modifiche</button>
+        </div>
+    </body>
+    <script src="infoaziendaModifica.js"></script>
+</html>

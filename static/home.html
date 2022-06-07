@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="style.css" rel="stylesheet">
+        <title>Home</title>
+    </head>
+    <body>
+        <h1 class="home">Home</h1>
+        <a class="home" href="tire.html">Lista Pneumatici</a>
+        <a class="home" href="manageAppointments.html">Appuntamenti</a>
+        <a class="home" href="infoazienda.html">Info Azienda</a>
+        <a class="home" href="infoaziendaModifica.html">Modifica info Azienda</a>
+        <a class="home" href="visualizzadata.html">Date</a>
+        <hr>
+        <br>
+        <h2>Login</h2>
+        <form action="api/v2/login" method="post" name="loginform" id="loginform">
+            <input name="username" value="user1" id="userName"/>
+            <input name="password" value="pass1" id="userPassword"/>
+            <button type="button" onclick="login()">Login</button>
+          </form>
+    <script src="manageLogin.js"></script>
+    </body>
+
+</html>

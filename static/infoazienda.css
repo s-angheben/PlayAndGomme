@@ -1,0 +1,209 @@
+body {
+    background-color: black;
+    background-position: center;
+    font-size: 120%;
+    font-weight: bold;
+    color:yellow;
+}
+
+.titilo {
+    height: 8%;
+    width: 100%;
+}
+
+.nomeaz {
+    float: left;
+    text-align: center;
+    height: 100%;
+    width: 80%;
+}
+
+.bottoni {
+    text-align: center;
+    float: left;
+    height: 100%;
+    width: 20%;
+}
+
+.pagmain {
+    height: 87%;
+    width: 98%;
+    margin: auto;
+}
+
+.infoaz {
+    float: left;
+    height: 100%;
+    width: 83%;
+}
+
+.descrizione{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    float: left;
+    height: 55%;
+    width: 50%;
+    display: table;
+    overflow: auto;
+}
+
+.immagine{
+    text-align: center;
+    float: left;
+    height: 55%;
+    width: 50%;
+}
+
+.immagineGomma{
+    height: 100%;
+    width: 100%;
+}
+
+.orari{
+    text-align: center;
+    height: 10%;
+    width: 100%;
+    display: table;
+    overflow: auto;
+}
+
+.indirizzo{
+    text-align: center;
+    float: left;
+    height: 25%;
+    width: 55%;
+    display: table;
+    overflow: auto;
+}
+
+.immagine2{
+    text-align: center;
+    float: left;
+    height: 25%;
+    width: 45%;
+}
+
+.immagineMappa {
+    height: 100%;
+    width: 100%;
+}
+
+.barra {
+    height: 5%;
+    width: 100%;
+}
+
+.telefono {
+    text-align: center;
+    float: left;
+    height: 100%;
+    width: 10%;
+}
+
+.email {
+    text-align: center;
+    float: left;
+    height: 100%;
+    width: 10%;
+}
+
+.telefonoimg {
+    text-align: center;
+    float: left;
+    height: 100%;
+    width: 50%;
+}
+
+.telefonoscr {
+    text-align: center;
+    float: left;
+    height: 100%;
+    width: 50%;
+}
+
+.emailimg {
+    text-align: center;
+    float: left;
+    height: 100%;
+    width: 50%;
+}
+
+.emailscr {
+    text-align: center;
+    float: left;
+    height: 100%;
+    width: 50%;
+}
+
+.spazio {
+    text-align: center;
+    float: left;
+    height: 100%;
+    width: 60%;
+}
+
+.link {
+    text-align: center;
+    float: left;
+    height: 100%;
+    width: 20%;
+}
+
+.linkscr {
+    text-align: center;
+    float: left;
+    height: 100%;
+    width:40%;
+}
+
+.linkbtn {
+    text-align: center;
+    float: left;
+    height: 100%;
+    width:60%;
+}
+
+.linkbtn2 {
+    height: 100%;
+    width:30%;
+}
+
+.centro{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.newsimg{
+    width:100%;
+    height: 10%;
+    /*background-color: aqua;
+    border-radius: 40%;*/
+}
+
+.news {
+    text-align: center;
+    margin-left: 2%;
+    float: left;
+    background-color:gold;
+    color: brown;
+    height: 100%;
+    width: 15%;
+    overflow: auto;
+}
+
+.riquadri{
+    width:90%;
+    margin-left: 5%;
+    background-color: yellow;
+    color: black;
+}
+
+.bttnn{
+    height: 50%;
+    width: 40%;
+    background-color: brown;
+    color: white;
+    font-weight: bold;
+}
+

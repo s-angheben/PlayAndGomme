@@ -2,14 +2,23 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master, baseSprint2 ]
   pull_request:
-    branches: [ main ]
+    branches: [ master, baseSprint2  ]
 
 jobs:
-  build:
+  test:
 
     runs-on: ubuntu-latest
+
+    environment: config
+
+    env:
+      DB_URL: ${{ secrets.DB_URL }}
+      FRONTEND: ${{ secrets.FRONTEND }}
+      ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+      CREDENTIALS: ${{ secrets.CREDENTIALS }}
+      CALENDAR_ID: ${{ secrets.CALENDAR_ID }}
 
     strategy:
       matrix:
@@ -21,6 +30,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
+      - run: npm install --save --force --legacy-peer-deps
       - run: npm run build --if-present
       - run: npm test
+
+  release:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - uses: actions/checkout@v2
+    # https://github.com/marketplace/actions/deploy-to-heroku#procfile-passing
+    - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "playandgomme" #Must be unique in Heroku
+        heroku_email: "samuele.angheben@studenti.unitn.it"
